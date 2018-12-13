@@ -3,7 +3,10 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#define video_path "../../Test/videos/PadronAnillos_01.avi"
+
+//#define video_path "../../Test/videos/PadronAnillos_01.avi"
+#define video_path "../../videos/padron2.avi"
+#define amountRingsInPattern 20
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
@@ -22,31 +25,31 @@ int main(int argc, char **argv)
 #endif
 
     if (!capture.isOpened())
-        throw "Error when reading steam_avi";
-
-    std::cout<<"0 ";    
+        throw "Error when reading steam_avi"; 
 
     /// Auxilaries
     cv::Mat frame, gray, bw, img;
     int frameCount = 0;
-    //int frameCountRingsCompl = 0;
-    //int ellipseCount = 0;
-    float threshold = 0.4f;
-
+    int frameCount18 = 0;
+    int frameCount19 = 0;
+    int frameCount20 = 0;
+    int frameCount21 = 0;
+    int frameCount22 = 0;
+    int frameCountRingsCompl = 0;    
+    float threshold = 0.65f;
+    float sumX, sumY,cpX, cpY;
+    int radialZone;
+    int nearestCount = 0;
+    
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     std::vector<cv::RotatedRect> minEllipse;
     std::vector<cv::RotatedRect> minEllipseSelected;
     std::vector<cv::Point2f> centers;
+    std::vector<cv::Point2f> tmpCenters;
 
     //cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
 
-    /// To try a couple of different algorithms
-    /*int icase = 1;
-    if( argc > 1)
-    {
-        icase = atoi(argv[1]);            
-    } */
     float w, h, c_x, c_y, child_c_x, child_c_y, distance;
     int child_index;
     int color = 50;
@@ -56,36 +59,38 @@ int main(int argc, char **argv)
 
     for (;;)
     {
-
         capture >> frame;
         if (frame.empty())
             break;
 
-        frameCount++;
-
+        frameCount++;        
         /// Restart variables
-        //ellipseCount = 0;
-        
+        sumX = 0.0;
+        sumY = 0.0;
+
         start = clock();
 
         // Convert to grayscale and apply Gaussian blur
         // Reduce information and noise
         cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
         cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0, 0);
-        //cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
-        //imshow("Grayscale Gaussian Blur", gray);
+        /*cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
+        imshow("Grayscale Gaussian Blur", gray);*/
 
         // Convert image to binary
-        cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+        //cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+        cv::adaptiveThreshold(gray, bw, 200, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, 10);
+        /*cv::namedWindow( "Binary", cv::WINDOW_NORMAL);
+        imshow("Binary", bw);*/
 
-        // Find all the contours in the thresholded image
-        
+
+        // Find all the contours in the thresholded image        
         cv::findContours(bw, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE, cv::Point(0, 0));
         //int idx = 0;
-        /*for (int i = 0; i < contours.size(); i++)
+        for (int i = 0; i < contours.size(); i++)
         {
             cv::drawContours(bw, contours, static_cast<int>(i), cv::Scalar(0, 0, 255), 2);
-        }*/
+        }
 
         //Find the minimum bounding ellipse
         minEllipse.resize(contours.size());
@@ -101,11 +106,7 @@ int main(int argc, char **argv)
         }
 
         for (int i = 0; i < contours.size(); i++)
-        {
-            //cout<<i<<": ";
-            /*for (int j = 0; j< 4; j++ ){  
-                        cout<<"  "<<hierarchy[i][j]; 
-                    } */
+        {            
             child_index = hierarchy[i][2];
             if (child_index != -1 && hierarchy[child_index][2] == -1) //Check out for child but not grandchild
             {
@@ -123,78 +124,97 @@ int main(int argc, char **argv)
                     minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
                     //ellipse(frame, minEllipse[i], Scalar(0,0,255), 2, 8 );
                     //ellipse(frame, minEllipse[hierarchy[i][2]], Scalar(0,0,255), 1, 8 );
-                    centers.push_back(cv::Point2f((child_c_x + c_x) / 2, (child_c_y + c_y) / 2));
-                    //ellipseCount++;
+                    centers.push_back(cv::Point2f((child_c_x + c_x) / 2, (child_c_y + c_y) / 2));                                     
                 }
             }
         }
 
-        //std::cout << "Frame: " << frameCount << " Ellipses found: " << ellipseCount << std::endl;
-
-        for (int i = 0; i < centers.size(); i++)
-        {
-            circle(frame, centers[i], 1, cv::Scalar(0, 0, 255), 4, 8);
-            cv::putText(frame, std::to_string(i), centers[i],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(255, 0, 0),2);
+        for(int i = 0; i < centers.size(); i++){
+            sumX += centers[i].x;
+            sumY += centers[i].y; 
         }
 
+        /// Finding an average Central Point         
+        cpX = sumX/centers.size();
+        cpY = sumY/centers.size();
+        circle(frame, cv::Point2f(sumX/centers.size(), sumY/centers.size()), 1, cv::Scalar(255, 0, 0), 4, 8);
+
+        
+        for(radialZone = 1; radialZone < 200; radialZone++){
+            
+            for(int i = 0; i < centers.size(); i++){
+                if(sqrt(pow((cpX - centers[i].x), 2) + pow((cpY - centers[i].y), 2)) < radialZone)
+                    nearestCount++;
+            }
+            if(nearestCount >= amountRingsInPattern){                
+                break;
+            }   
+        }   
+        //std::cout<<"Radial zone: "<<radialZone<<std::endl;     
+        /// Display circles in the radial zone     
+        for(int i = 0; i < centers.size(); i++){
+            if(sqrt(pow((cpX - centers[i].x), 2) + pow((cpY - centers[i].y), 2)) < radialZone + 20){
+                //tmpCenters.push_back(centers[i]);
+                circle(frame, centers[i], 1, cv::Scalar(0, 0, 255), 4, 8);    
+            }
+                
+        }
+        
+        /*if(centers.size() > amountRingsInPattern)
+            std::cout << "I: "<<centers.size() <<" F:"<< tmpCenters.size() <<std::endl;*/
+
+        /*centers.clear();
+        centers = tmpCenters;
+
+        for(int i = 0; i < centers.size();i++){
+            //circle(frame,centers[i],5,cv::Scalar(255,0,0),3,8);
+            circle(frame, centers[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+            //cv::putText(frame, std::to_string(i), centers[i],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        }*/
+
+        //std::cout<<"Frame: "<<frameCount <<" CP: "<<centers.size()<<std::endl;
+
+        /*if(centers.size() == 18)
+            frameCount18++;
+
+        if(centers.size() == 19)
+            frameCount19++;
+
+        if(centers.size() == 20)
+            frameCount20++;
+        
+        if(centers.size() == 21)
+            frameCount21++;
+
+        if(centers.size() == 22)
+            frameCount22++;*/
+        
         /*cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
         imshow("Video Display", frame);
-        cv::waitKey(40);*/
-
-        /*if(centers.size() >= 30)
-            frameCountRingsCompl++;
-        */
-        if (frameCount % 10 == 0)
+        cv::waitKey(20);*/
+                
+        if (frameCount % 20 == 0)
         {
             end = clock();
-            std::cout << "Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " milliseconds." << std::endl;
+            std::cout<<"Frame: "<<frameCount <<" Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " ms." <<std::endl;
         }
-
-        /*if(centers.size() == 30){
-            // Draw center points
-            for(int i = 0; i < centers.size();i++)
-                circle(frame, centers[i],1,Scalar(0,0,255),4,8);
-
-            namedWindow("Video Display", WINDOW_NORMAL);
-            imshow("Video Display", frame);
-            waitKey(20); // waits to display frame            
-        } */
 
         contours.clear();
         hierarchy.clear();
         minEllipse.clear();   
         minEllipseSelected.clear();
         centers.clear();
+        tmpCenters.clear();
     }
-    //std::cout<<"Complete rings were detected in "<<frameCountRingsCompl << " frames"<<std::endl;
+    
+    /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
+    std::cout<<"18 "<<frameCount18 <<std::endl;
+    std::cout<<"19 "<<frameCount19 <<std::endl;
+    std::cout<<"20 "<<frameCount20 <<std::endl;
+    std::cout<<"21 "<<frameCount21 <<std::endl;
+    std::cout<<"22 "<<frameCount22 <<std::endl;*/
     //cv::waitKey(0); // key press to close window
     // releases and window destroy are automatic in C++ interface
 
 }
 
-/*switch(icase)
-        {
-            case 0:
-                std::cout<<"0"<<std::endl;
-                float diff; //Difference between width and high ellipse
-        
-                for(size_t i = 0; i< contours.size(); i++ ){
-                    w = minEllipse[i].size.width;
-                    h = minEllipse[i].size.height;
-                    diff = w - h;                        
-                
-                    if(abs(diff) < 40){
-                        child_index = hierarchy[i][2];    
-                        if(child_index != -1 && hierarchy[child_index][2] == -1) //Check out for child but not grandchild
-                        {
-                            minEllipseSelected.push_back(minEllipse[i]);            
-                            minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);                            
-                            ellipse(img, minEllipse[i], cv::Scalar(0,0,255), 1, 8 );            
-                            ellipse(img, minEllipse[hierarchy[i][2]], cv::Scalar(0,0,255), 1, 8 );            
-                        }
-                    }                                                                        
-                }        
-        
-                break;
-
-        */
