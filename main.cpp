@@ -5,32 +5,34 @@
 
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
-#define video_path "../../videos/padron1.avi"  // 12 Anillos
+//#define video_path "../../videos/padron1.avi"  // 12 Anillos
 //#define video_path "../../videos/padron2.avi"  // 20 Anillos
 //#define video_path "../../videos/PadronAnillos_01.avi"
-#define amountRingsInPattern 12
+#define patternWidth 5
+#define patternHeigh 4
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
 {
-
+    int patterSize = patternHeigh * patternWidth;
     /*std::string filename = "../../../videos/PadronAnillos_01.avi";
     cv::VideoCapture capture(filename);*/
 
-#ifdef video_path
+/*#ifdef video_path
     cv::VideoCapture capture(video_path);
 #else
     cv::VideoCapture capture(0);   // --> For video Capture
     capture.set(cv::CAP_PROP_FPS, 60); // ---> Cantidad de FPS caputrados por la camara
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-#endif
+#endif*/
 
-    if (!capture.isOpened())
-        throw "Error when reading steam_avi"; 
-
+    /*if (!capture.isOpened())
+        throw "Error when reading steam_avi"; */
+    
+    //cv::Mat frame;
     /// Auxilaries
-    cv::Mat frame, gray, bw, cont, img;
+    cv::Mat gray, bw, cont, img;
     int frameCount = 0;
     int frameCount18 = 0;
     int frameCount19 = 0;
@@ -49,6 +51,7 @@ int main(int argc, char **argv)
     std::vector<cv::RotatedRect> minEllipseSelected;
     std::vector<cv::Point2f> centers;
     std::vector<cv::Point2f> tmpCenters;
+    std::vector<cv::Point2f> corners;
 
     //cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
 
@@ -59,13 +62,18 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
-    for (;;)
+    for( int o = 1; o< 6; o++ )
     {
-        capture >> frame;
-        if (frame.empty())
-            break;
+        //string filename = samples::findFile(names[i]);
+        std::string filename = "../../img/" + std::to_string(o) + ".png";
+        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);
+    //for (;;)
+    //{
+        //capture >> frame;
+        //if (frame.empty())
+            //break;
 
-        frameCount++;        
+        //frameCount++;        
         /// Restart variables
         sumX = 0.0;
         sumY = 0.0;
@@ -116,19 +124,20 @@ int main(int argc, char **argv)
             {
                 //Check distances between parent's center and child's center
                 //Should be less than threshold
-                c_x = minEllipse[i].center.x;
+                /*c_x = minEllipse[i].center.x;
                 c_y = minEllipse[i].center.y;
                 child_c_x = minEllipse[child_index].center.x;
-                child_c_y = minEllipse[child_index].center.y;
-                distance = sqrt(pow((c_x - child_c_x), 2) + pow((c_y - child_c_y), 2));
+                child_c_y = minEllipse[child_index].center.y;*/
+                distance = cv::norm(minEllipse[i].center - minEllipse[child_index].center); 
+                //distance = sqrt(pow((c_x - child_c_x), 2) + pow((c_y - child_c_y), 2));
                 //std::cout<<"dist: " <<distance <<std::endl;
                 if (distance < threshold)
                 {
                     minEllipseSelected.push_back(minEllipse[i]);
                     minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
-                    ellipse(cont, minEllipse[i], cv::Scalar(0,0,255), 2, 8 );
-                    ellipse(cont, minEllipse[hierarchy[i][2]], cv::Scalar(0,0,255), 1, 8 );
-                    centers.push_back(cv::Point2f((child_c_x + c_x) / 2, (child_c_y + c_y) / 2));                                     
+                    //ellipse(cont, minEllipse[i], cv::Scalar(0,0,255), 2, 8 );
+                    //ellipse(cont, minEllipse[hierarchy[i][2]], cv::Scalar(0,0,255), 1, 8 );
+                    centers.push_back(cv::Point2f((minEllipse[i].center.x + minEllipse[child_index].center.x) / 2, (minEllipse[i].center.y + minEllipse[child_index].center.y) / 2));                                     
                 }
             }
         }
@@ -141,24 +150,25 @@ int main(int argc, char **argv)
         }
 
         /// Finding an average Central Point         
-        cpX = sumX/centers.size();
-        cpY = sumY/centers.size();
-        circle(frame, cv::Point2f(sumX/centers.size(), sumY/centers.size()), 1, cv::Scalar(255, 0, 0), 4, 8);
+        cv::Point2f avg(sumX/centers.size(), sumY/centers.size());
+        /*cpX = sumX/centers.size();
+        cpY = sumY/centers.size();*/
+        circle(frame, avg, 1, cv::Scalar(255, 0, 0), 4, 8);
         
         for(radialZone = 1; radialZone < 200; radialZone++){
             int count = 0;
             for(int i = 0; i < centers.size(); i++){
-                if(sqrt(pow((cpX - centers[i].x), 2) + pow((cpY - centers[i].y), 2)) < radialZone)
+                if(cv::norm(avg - centers[i]) < radialZone)
                     count++;
             }
-            if(count >= amountRingsInPattern){
+            if(count >= patterSize){
                 break;
             }   
         }
         
         /// Display circles in the radial zone     
         for(int i = 0; i < centers.size(); i++){
-            if(sqrt(pow((cpX - centers[i].x), 2) + pow((cpY - centers[i].y), 2)) < radialZone + 20)
+            if(cv::norm(avg - centers[i]) < radialZone + 20)
                 tmpCenters.push_back(centers[i]);
         }
 
@@ -175,37 +185,58 @@ int main(int argc, char **argv)
         }
 
         tmpCenters.clear();
-        tmpCenters.resize(amountRingsInPattern);
+        tmpCenters.resize(patterSize);
 
         int i, j;
         float distMax = 0.0, distTmp = 0.0;
         int ii, jj;
 
+        /*std::cout<<"Print points before... "<<centers.size()<<std::endl; 
+        std::cout<<"Print points before... "<<tmpCenters.size()<<std::endl;
+        for(int x=0; x<centers.size();x++){
+            std::cout<<"("<<centers[x].x<<", "<<centers[x].y<<")"<<std::endl;
+        }*/
+        
         /// Compute Distance between all centers and get couple of points that are further away feo
         for(i = 0; i < centers.size(); i++){
             for(j = 0; j < centers.size(); j++){
-                distTmp = sqrt(pow((centers[j].x - centers[i].x), 2) + pow((centers[j].y - centers[i].y), 2));
+                if(i == j)
+                    continue;
+                distTmp = cv::norm(centers[j] - centers[i]);
                 if(distTmp > distMax){
                     distMax = distTmp;
                     ii = i;
                     jj = j;
-                }                    
+                }                           
             }   
         }
         
-        tmpCenters[0] = centers[ii];
-        tmpCenters[amountRingsInPattern -1] = centers[jj];
-        centers.erase(centers.begin() + ii, centers.begin() + jj-1);
+        /*std::cout<<"i: ("<<centers[ii].x<<", "<<centers[ii].y<<")"<<std::endl;
+        std::cout<<"j: ("<<centers[jj].x<<", "<<centers[jj].y<<")"<<std::endl;*/
         
-        circle(frame, tmpCenters[0], 1, cv::Scalar(0, 255, 0), 4, 8);
-        circle(frame, tmpCenters[amountRingsInPattern -1], 1, cv::Scalar(0, 255, 0), 4, 8);
+        /// Add to corners vector
+        corners.push_back(centers[ii]);
+        corners.push_back(centers[jj]);
+        
+        /// Erase them from list
+        centers.erase(centers.begin() + ii);
+        centers.erase(centers.begin() + jj);
+
+        
+        /*std::cout<<"Print points after... "<<centers.size()<<std::endl; 
+        std::cout<<"Print points after... "<<tmpCenters.size()<<std::endl; 
+        for(int x=0; x<centers.size();x++){
+            std::cout<<"("<<centers[x].x<<", "<<centers[x].y<<")"<<std::endl;
+        }*/
 
         distMax = 0.0;
         distTmp = 0.0;        
 
         for(i = 0; i < centers.size(); i++){
             for(j = 0; j < centers.size(); j++){
-                distTmp = sqrt(pow((centers[j].x - centers[i].x), 2) + pow((centers[j].y - centers[i].y), 2));
+                if(i == j)
+                    continue;
+                distTmp = cv::norm(centers[j] - centers[i]);
                 if(distTmp > distMax){
                     distMax = distTmp;
                     ii = i;
@@ -214,14 +245,73 @@ int main(int argc, char **argv)
             }   
         }
 
-        tmpCenters[0+4] = centers[ii];
-        tmpCenters[amountRingsInPattern -1-4] = centers[jj];
-
-        circle(frame, tmpCenters[0+4], 1, cv::Scalar(0, 255, 0), 4, 8);
-        circle(frame, tmpCenters[amountRingsInPattern -1-4], 1, cv::Scalar(0, 255, 0), 4, 8);
+        /// Add to corners vector
+        corners.push_back(centers[ii]);
+        corners.push_back(centers[jj]);
         
+        /// Erase
+        centers.erase(centers.begin() + ii);
+        centers.erase(centers.begin() + jj);
+        
+        
+        std::cout<<"Corners "<<corners.size()<<std::endl;
+        for(int i = 0; i < corners.size(); i++){
+            std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
+        }
+
+        std::sort(corners.begin(), corners.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
+        std::sort(centers.begin(), centers.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
+
+        std::cout<<"X "<<corners.size()<<std::endl;
+        for(int i = 0; i < corners.size(); i++){
+            std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
+        }
 
 
+        if(corners[0].y > corners[1].y){            
+            tmpCenters[patterSize-patternWidth] = corners[0];
+            tmpCenters[0] = corners[1];
+            std::swap(corners[0], corners[1]);
+        }
+        else{
+            tmpCenters[0] = corners[0];
+            tmpCenters[patterSize-patternWidth] = corners[1];            
+        }
+
+        if(corners[2].y > corners[3].y){
+            tmpCenters[patterSize-1] = corners[2];
+            tmpCenters[patternWidth-1] = corners[3];            
+        }
+        else{            
+            tmpCenters[patternWidth-1] = corners[2];
+            tmpCenters[patterSize-1] = corners[3];
+            std::swap(corners[2], corners[3]);
+        }
+
+        /*std::cout<<"--- "<<corners.size()<<std::endl;
+        for(int i = 0; i < corners.size(); i++){
+            std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
+        }*/
+            
+        circle(frame, tmpCenters[0], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[patternWidth-1], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[patterSize-patternWidth], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[patterSize -1], 1, cv::Scalar(0, 255, 0), 4, 8);
+
+        cv::putText(frame, std::to_string(0), tmpCenters[0],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(1), tmpCenters[patternWidth-1],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(2), tmpCenters[patterSize-patternWidth],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(3), tmpCenters[patterSize -1],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+
+
+        ///***** get slope ****///
+        /*double slope, length;
+        slope  = (tmpCenters[0].y - tmpCenters[patterSize-patternWidth].y) / (tmpCenters[0].x - tmpCenters[patterSize-patternWidth].x)
+        length = norm(tmpCenters[0] - tmpCenters[0])*/
+
+        /*circle(frame,cv::Point2f(50,50), 1, cv::Scalar(0, 255, 255), 4, 8);
+        circle(frame,cv::Point2f(250,250), 1, cv::Scalar(0, 255, 255), 4, 8);*/
+        
         /// Draw a rectagle
         /*cv::Rect rect = cv::boundingRect(centers);
         cv::rectangle(frame, rect, cv::Scalar(0, 255, 0));
@@ -248,7 +338,7 @@ int main(int argc, char **argv)
         
         cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
         imshow("Video Display", frame);
-        cv::waitKey(20);
+        //cv::waitKey();
 
         end = clock();
         sumTime += (end - start)/(double)( CLOCKS_PER_SEC / 1000 );
@@ -267,6 +357,11 @@ int main(int argc, char **argv)
         minEllipseSelected.clear();
         centers.clear();
         tmpCenters.clear();
+        corners.clear();
+    
+        int c = cv::waitKey();
+        if( c == 27 )
+            break;
     }
     /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
     std::cout<<"10 "<<frameCount18 <<std::endl;
