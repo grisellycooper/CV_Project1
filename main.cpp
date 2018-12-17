@@ -5,8 +5,10 @@
 
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
-#define video_path "../../videos/padron2.avi"
-#define amountRingsInPattern 20
+#define video_path "../../videos/padron1.avi"  // 12 Anillos
+//#define video_path "../../videos/padron2.avi"  // 20 Anillos
+//#define video_path "../../videos/PadronAnillos_01.avi"
+#define amountRingsInPattern 12
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
@@ -39,6 +41,7 @@ int main(int argc, char **argv)
     float threshold = 0.75f;
     float sumX, sumY,cpX, cpY;
     int radialZone;
+    float sumTime = 0.0f;
     
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
@@ -47,7 +50,7 @@ int main(int argc, char **argv)
     std::vector<cv::Point2f> centers;
     std::vector<cv::Point2f> tmpCenters;
 
-    cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
+    //cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
 
     float w, h, c_x, c_y, child_c_x, child_c_y, distance;
     int child_index;
@@ -73,14 +76,14 @@ int main(int argc, char **argv)
         // Reduce information and noise
         cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
         cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0, 0);
-        cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
-        imshow("Grayscale Gaussian Blur", gray);
+        /*cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
+        imshow("Grayscale Gaussian Blur", gray);*/
 
         // Convert image to binary
         //cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
         cv::adaptiveThreshold(gray, bw, 200, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, 10);
-        cv::namedWindow( "Binary", cv::WINDOW_NORMAL);
-        imshow("Binary", bw);
+        /*cv::namedWindow( "Binary", cv::WINDOW_NORMAL);
+        imshow("Binary", bw);*/
 
         cont = frame.clone();
         // Find all the contours in the thresholded image        
@@ -129,8 +132,8 @@ int main(int argc, char **argv)
                 }
             }
         }
-        cv::namedWindow( "Ellipse Fitting", cv::WINDOW_NORMAL);
-        imshow("Ellipse Fitting", cont);
+        /*cv::namedWindow( "Ellipse Fitting", cv::WINDOW_NORMAL);
+        imshow("Ellipse Fitting", cont);*/
 
         for(int i = 0; i < centers.size(); i++){
             sumX += centers[i].x;
@@ -152,7 +155,7 @@ int main(int argc, char **argv)
                 break;
             }   
         }
-
+        
         /// Display circles in the radial zone     
         for(int i = 0; i < centers.size(); i++){
             if(sqrt(pow((cpX - centers[i].x), 2) + pow((cpY - centers[i].y), 2)) < radialZone + 20)
@@ -171,31 +174,91 @@ int main(int argc, char **argv)
             //cv::putText(frame, std::to_string(i), centers[i],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
         }
 
+        tmpCenters.clear();
+        tmpCenters.resize(amountRingsInPattern);
+
+        int i, j;
+        float distMax = 0.0, distTmp = 0.0;
+        int ii, jj;
+
+        /// Compute Distance between all centers and get couple of points that are further away feo
+        for(i = 0; i < centers.size(); i++){
+            for(j = 0; j < centers.size(); j++){
+                distTmp = sqrt(pow((centers[j].x - centers[i].x), 2) + pow((centers[j].y - centers[i].y), 2));
+                if(distTmp > distMax){
+                    distMax = distTmp;
+                    ii = i;
+                    jj = j;
+                }                    
+            }   
+        }
+        
+        tmpCenters[0] = centers[ii];
+        tmpCenters[amountRingsInPattern -1] = centers[jj];
+        centers.erase(centers.begin() + ii, centers.begin() + jj-1);
+        
+        circle(frame, tmpCenters[0], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[amountRingsInPattern -1], 1, cv::Scalar(0, 255, 0), 4, 8);
+
+        distMax = 0.0;
+        distTmp = 0.0;        
+
+        for(i = 0; i < centers.size(); i++){
+            for(j = 0; j < centers.size(); j++){
+                distTmp = sqrt(pow((centers[j].x - centers[i].x), 2) + pow((centers[j].y - centers[i].y), 2));
+                if(distTmp > distMax){
+                    distMax = distTmp;
+                    ii = i;
+                    jj = j;
+                }                    
+            }   
+        }
+
+        tmpCenters[0+4] = centers[ii];
+        tmpCenters[amountRingsInPattern -1-4] = centers[jj];
+
+        circle(frame, tmpCenters[0+4], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[amountRingsInPattern -1-4], 1, cv::Scalar(0, 255, 0), 4, 8);
+        
+
+
+        /// Draw a rectagle
+        /*cv::Rect rect = cv::boundingRect(centers);
+        cv::rectangle(frame, rect, cv::Scalar(0, 255, 0));
+        std::cout<<rect.height << " " <<rect.width <<std::endl;*/
+
+
+
         //std::cout<<"Frame: "<<frameCount <<" CP: "<<centers.size()<<std::endl;
 
-        /*if(centers.size() == 18)
+        /*if(centers.size() == 10)
             frameCount18++;
 
-        if(centers.size() == 19)
+        if(centers.size() == 11)
             frameCount19++;
 
-        if(centers.size() == 20)
+        if(centers.size() == 12)
             frameCount20++;
         
-        if(centers.size() == 21)
+        if(centers.size() == 13)
             frameCount21++;
 
-        if(centers.size() == 22)
+        if(centers.size() == 14)
             frameCount22++;*/
         
         cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
         imshow("Video Display", frame);
         cv::waitKey(20);
-                
+
+        end = clock();
+        sumTime += (end - start)/(double)( CLOCKS_PER_SEC / 1000 );
+
         /*if (frameCount % 20 == 0)
         {
-            end = clock();
-            std::cout << "Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " milliseconds." <<std::endl;
+            sumTime = sumTime/20.0;
+            std::cout << "Frame: " << frameCount << " Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " ms." <<std::endl;
+            //std::cout << sumTime <<std::endl;
+            sumTime = 0.0;
         }*/
 
         contours.clear();
@@ -206,11 +269,11 @@ int main(int argc, char **argv)
         tmpCenters.clear();
     }
     /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
-    std::cout<<"18 "<<frameCount18 <<std::endl;
-    std::cout<<"19 "<<frameCount19 <<std::endl;
-    std::cout<<"20 "<<frameCount20 <<std::endl;
-    std::cout<<"21 "<<frameCount21 <<std::endl;
-    std::cout<<"22 "<<frameCount22 <<std::endl;*/
+    std::cout<<"10 "<<frameCount18 <<std::endl;
+    std::cout<<"11 "<<frameCount19 <<std::endl;
+    std::cout<<"12 "<<frameCount20 <<std::endl;
+    std::cout<<"13 "<<frameCount21 <<std::endl;
+    std::cout<<"14 "<<frameCount22 <<std::endl;*/
     //cv::waitKey(0); // key press to close window
     // releases and window destroy are automatic in C++ interface
 
