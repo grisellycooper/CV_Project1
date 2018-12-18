@@ -3,22 +3,39 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-// no tengo time
-
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
-#define video_path "../../videos/padron1.avi"  // 12 Anillos
+//#define video_path "../../videos/padron1.avi"  // 12 Anillos
 //#define video_path "../../videos/padron2.avi"  // 20 Anillos
 //#define video_path "../../videos/PadronAnillos_01.avi"
 #define patternWidth 5
 #define patternHeigh 4
 
 
-double distance_to_Line(cv::Point line_start, cv::Point line_end, cv::Point point)
+/*float distance_to_Line(cv::Point2f line_start, cv::Point2f line_end, cv::Point2f point)
 {
-	/*double normalLength = hypot(line_end.x - line_start.x, line_end.y - line_start.y);
-	double distance = (double)((point.x - line_start.x) * (line_end.y - line_start.y) - (point.y - line_start.y) * (line_end.x - line_start.x)) / normalLength;
-	return distance;*/
+	float normalLength = hypot(line_end.x - line_start.x, line_end.y - line_start.y);
+	float distance = (float)((point.x - line_start.x) * (line_end.y - line_start.y) - (point.y - line_start.y) * (line_end.x - line_start.x)) / normalLength;
+	return distance;
+}*/
+
+
+double cross_product( cv::Point2f a, cv::Point2f b ){
+   return a.x*b.y - a.y*b.x;
 }
+
+double getArea( cv::Point2f a, cv::Point2f b, cv::Point2f c )
+{
+    double aa, bb, cc, side;    
+    aa=sqrt(((b.x-a.x)*(b.x-a.x))+((b.y-a.y)*(b.y-a.y)));
+    bb=sqrt(((c.x-b.x)*(c.x-b.x))+((c.y-b.y)*(c.y-b.y)));
+    cc=sqrt(((a.x-c.x)*(a.x-c.x))+((a.y-c.y)*(a.y-c.y)));
+
+    side=((aa+bb+cc)/2);
+
+    return sqrt(side*(side-aa)*(side-bb)*(side-cc));
+}
+
+
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
@@ -27,18 +44,18 @@ int main(int argc, char **argv)
     /*std::string filename = "../../../videos/PadronAnillos_01.avi";
     cv::VideoCapture capture(filename);*/
 
-#ifdef video_path
+/*#ifdef video_path
     cv::VideoCapture capture(video_path);
 #else
     cv::VideoCapture capture(0);   // --> For video Capture
     capture.set(cv::CAP_PROP_FPS, 60); // ---> Cantidad de FPS caputrados por la camara
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-#endif
+#endif*/
 
-    if (!capture.isOpened())
+    /*if (!capture.isOpened())
         throw "Error when reading steam_avi"; 
-    
+    */
     cv::Mat frame;
     /// Auxilaries
     cv::Mat gray, bw, cont, img;
@@ -61,6 +78,7 @@ int main(int argc, char **argv)
     std::vector<cv::Point2f> centers;
     std::vector<cv::Point2f> tmpCenters;
     std::vector<cv::Point2f> corners;
+    std::vector<cv::Point2f> tmpCorners;
 
     //cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
 
@@ -71,14 +89,14 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
-    /*for( int o = 1; o< 6; o++ )
+    for( int o = 1; o< 6; o++ )
     {
         //string filename = samples::findFile(names[i]);
         std::string filename = "../../img/" + std::to_string(o) + ".png";
-        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);*/
-    for (;;)
+        frame = cv::imread(filename, cv::IMREAD_COLOR);
+    /*for (;;)
     {
-        capture >> frame;
+        capture >> frame;*/
         if (frame.empty())
             break;
 
@@ -292,25 +310,65 @@ int main(int argc, char **argv)
             std::swap(corners[2], corners[3]);
         }
 
+        tmpCorners.resize(4);
+        tmpCorners[0] = tmpCenters[0];
+        tmpCorners[1] = tmpCenters[patternWidth-1];
+        tmpCorners[2] = tmpCenters[patterSize-patternWidth];
+        tmpCorners[3] = tmpCenters[patterSize -1];
+
         /*std::cout<<"--- "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
             std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
         }*/
             
-        circle(frame, tmpCenters[0], 1, cv::Scalar(0, 255, 0), 4, 8);
+        /*circle(frame, tmpCenters[0], 1, cv::Scalar(0, 255, 0), 4, 8);
         circle(frame, tmpCenters[patternWidth-1], 1, cv::Scalar(0, 255, 0), 4, 8);
         circle(frame, tmpCenters[patterSize-patternWidth], 1, cv::Scalar(0, 255, 0), 4, 8);
-        circle(frame, tmpCenters[patterSize -1], 1, cv::Scalar(0, 255, 0), 4, 8);
+        circle(frame, tmpCenters[patterSize -1], 1, cv::Scalar(0, 255, 0), 4, 8);*/
 
-        cv::putText(frame, std::to_string(0), tmpCenters[0],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
-        cv::putText(frame, std::to_string(1), tmpCenters[patternWidth-1],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
-        cv::putText(frame, std::to_string(2), tmpCenters[patterSize-patternWidth],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
-        cv::putText(frame, std::to_string(3), tmpCenters[patterSize -1],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(0), tmpCorners[0],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(1), tmpCorners[1],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(2), tmpCorners[2],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
+        cv::putText(frame, std::to_string(3), tmpCorners[3],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 0, 0),2);
 
+        line(frame, tmpCorners[0], tmpCorners[1], cv::Scalar(130, 130, 130), 1, 8, 0);
 
-        ///***** get slope ****///
-        /*double slope, length;
-        slope  = (tmpCenters[0].y - tmpCenters[patterSize-patternWidth].y) / (tmpCenters[0].x - tmpCenters[patterSize-patternWidth].x)
+        float area, minDist = 10000.0f;
+        int count = 1;
+        ///**** Order points ***//
+        
+        //for(int a = 0; a < patterSize; a++){
+            for(int b = 0; b < centers.size(); b++){
+                area = getArea(tmpCorners[0], tmpCorners[1], centers[b]);
+
+                if(area < minDist){
+                    minDist = area;
+                    ii = b;
+                }                    
+            }
+            std::cout<<" ("<<centers[ii].x<<", "<<centers[ii].y<<")"<<std::endl;
+            /*if(centers[ii] == tmpCorners[1]){
+                break;
+            }
+            else{
+                std::cout<<"*"<<std::endl;
+                tmpCenters[count] = centers[ii];
+                count++;
+                centers.erase(centers.begin()+ii);
+            }*/
+            /*if(tmpCenters.size() == patterSize)
+                break;*/
+        //}
+        
+        circle(frame, centers[ii], 1, cv::Scalar(255, 0, 255), 4, 8);
+
+        /*for(int i = 0; i < tmpCenters.size();i++){
+            //circle(frame,centers[i],5,cv::Scalar(255,0,0),3,8);
+            circle(frame, tmpCenters[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+            cv::putText(frame, std::to_string(i), tmpCenters[i],cv::FONT_HERSHEY_DUPLEX,0.5, cv::Scalar(250, 255, 0),2);
+        }*/
+
+        /*double slope, lengthfloat        slope  = (tmpCenters[0].y - float[patterSize-float].y) / (tmpCenters[0].x - tmpCenters[patterSize-patternWidth].x)
         length = norm(tmpCenters[0] - tmpCenters[0])*/
 
         //*** distance **//
@@ -347,7 +405,7 @@ int main(int argc, char **argv)
         cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
         imshow("Video Display", frame);
         //cv::waitKey(20);
-        //cv::waitKey();
+        cv::waitKey();
 
         end = clock();
         sumTime += (end - start)/(double)( CLOCKS_PER_SEC / 1000 );
@@ -368,9 +426,9 @@ int main(int argc, char **argv)
         tmpCenters.clear();
         corners.clear();
     
-        if(cv::waitKey() == 'w') cv::waitKey(200);
+        /*if(cv::waitKey() == 'w') cv::waitKey(200);
 
-        if(cv::waitKey(10) == 27) break;
+        if(cv::waitKey(10) == 27) break;*/
 
     }
     /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
