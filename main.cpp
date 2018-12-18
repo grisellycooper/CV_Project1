@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+// richard
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
 //#define video_path "../../videos/padron1.avi"  // 12 Anillos
