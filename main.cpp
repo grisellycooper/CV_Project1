@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
 //#define video_path "../../videos/padron1.avi"  // 12 Anillos
 #define video_path "../../videos/padron2.avi"  // 20 Anillos
@@ -58,7 +59,6 @@ int main(int argc, char **argv)
     std::vector<cv::Point2f> centers;
     std::vector<cv::Point2f> tmpCenters;
     std::vector<cv::Point2f> corners;
-    std::vector<cv::Point2f> tmpCorners;
 
     //cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
 
