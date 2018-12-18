@@ -14,19 +14,18 @@
 #define patternHeigh 4
 
 
-void getTotalCorners( const std::vector<cv::Point2f> &centers, std::vector<cv::Point2f> &corners)
+void getTotalCorners(std::vector<cv::Point2f> &centers, std::vector<cv::Point2f> &corners)
 {
     float Ax = corners[0].x;
-    float Ay = corners[1].y;
+    float Ay = corners[0].y;
 
-    float Bx = corners[0].x;
+    float Bx = corners[1].x;
     float By = corners[1].y;
 
     float Cx,Cy;
-    float A,B,C,side,area;
+    float A,B,C,side,area, dist, distMax;
     float ansArea = 0;
-    int   ind = 0;
-    std::vector<int> twoCornes(2,0);
+    int   ind1 = 0, ind2;
 
     for(int i=0;i<centers.size();i++)
     {
@@ -40,17 +39,43 @@ void getTotalCorners( const std::vector<cv::Point2f> &centers, std::vector<cv::P
 
         if(area>ansArea)
         {
-            twoCornes[0] = ind;
-            twoCornes[1] = i;
             ansArea      = area;            
-            ind          = i; 
+            ind1          = i; 
         }
-    } 
-    corners.push_back(centers[twoCornes[0]]);
-    corners.push_back(centers[twoCornes[1]]);
+    }
+
+    distMax = 0.0;
+    cv::Point2f np(centers[ind1]);
+    corners.push_back(np);
+    centers.erase(centers.begin() + ind1);
+
+    for(int i=0;i<centers.size();i++)
+    {
+        dist = cv::norm(centers[i]-np);
+        if(dist > distMax){
+            distMax = dist;
+            ind2 = i;
+        }
+    }
+
+    corners.push_back(centers[ind2]);
 }
 
+bool isColinear(cv::Point2f a, cv::Point2f b, cv::Point2f c){
+    // Evaluamos para x e y
     
+    //float tx = (c.x - a.x) / b.y;
+    //float ty = (c.y - b.x) / a.y;
+
+    float m1 = abs((b.y - a.y)/(b.x - a.x));
+    float m2 = abs((c.y - a.y)/(c.x - a.x));
+
+    //if(abs(tx-ty) < 5.0f) 
+    if(abs(m1-m2) < 0.01f) 
+        return true;
+    
+    return false;
+}  
 
 
 /* Try to detect circles in a video using HoughCircles function */
@@ -59,17 +84,17 @@ int main(int argc, char **argv)
     int patterSize = patternHeigh * patternWidth;
     
 
-    std::string filename = "../../../videos/PadronAnillos_01.avi";
-    cv::VideoCapture capture(filename);
+    //std::string filename = "../../../videos/PadronAnillos_01.avi";
+    //cv::VideoCapture capture(filename);
 
-/*#ifdef video_path
+#ifdef video_path
     cv::VideoCapture capture(video_path);
 #else
     cv::VideoCapture capture(0);   // --> For video Capture
     capture.set(cv::CAP_PROP_FPS, 60); // ---> Cantidad de FPS caputrados por la camara
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-#endif*/
+#endif
 
     if (!capture.isOpened())
         throw "Error when reading steam_avi"; 
@@ -304,20 +329,20 @@ int main(int argc, char **argv)
         */
 
         getTotalCorners(centers,corners);
-
         
-        std::cout<<"Corners "<<corners.size()<<std::endl;
+                
+        /*std::cout<<"Corners "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
             std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
-        }
+        }*/
 
         std::sort(corners.begin(), corners.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
         std::sort(centers.begin(), centers.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
 
-        std::cout<<"X "<<corners.size()<<std::endl;
+        /*std::cout<<"X "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
             std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
-        }
+        }*/
 
 
         if(corners[0].y > corners[1].y){            
@@ -339,6 +364,13 @@ int main(int argc, char **argv)
             tmpCenters[patterSize-1] = corners[3];
             std::swap(corners[2], corners[3]);
         }
+
+
+        for(i = 0; i < centers.size(); i++){
+            if(isColinear(corners[0], corners[1], centers[i]))
+                circle(frame, centers[i], 1, cv::Scalar(255, 255, 0), 4, 8);        
+        }
+        
 
         /*std::cout<<"--- "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
@@ -411,8 +443,11 @@ int main(int argc, char **argv)
         tmpCenters.clear();
         corners.clear();
     
-        int c = cv::waitKey();
-        if( c == 27 )
+        //int c = cv::waitKey();
+        if( cv::waitKey() == 27 )
+            cv::waitKey(100);
+
+        if( cv::waitKey() == 27 )
             break;
     }
     /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
