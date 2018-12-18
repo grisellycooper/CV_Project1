@@ -11,8 +11,10 @@
 #define patternWidth 5
 #define patternHeigh 4
 
+
 #define display 1
-#define displayContinuosly 1
+#define displayCompleteProcess 0
+#define displayContinuosly 0
 #define printTime 0
 #define printFrameCount 1
 
@@ -21,7 +23,7 @@
 void findCorners(std::vector<cv::Point2f> &centers, std::vector<cv::Point2f> &corners);
 void getProperOrder(std::vector<cv::Point2f> &centers, std::vector<cv::Point2f> &corners);
 
-/* Try to detect circles in a video using HoughCircles function */
+
 int main(int argc, char **argv)
 {
     int patterSize = patternHeigh * patternWidth;
@@ -68,18 +70,18 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
-    /*for( int o = 1; o< 6; o++ )
+    for( int o = 1; o< 6; o++ )
     {
         //string filename = samples::findFile(names[i]);
         std::string filename = "../../img/" + std::to_string(o) + ".png";
-        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);*/
+        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);
     
-    for (;;)
+    /*for (;;)
     {
         capture >> frame;
         if (frame.empty())
             break;
-
+*/
         frameCount++;        
         
         /// Restart variables
@@ -93,14 +95,19 @@ int main(int argc, char **argv)
         // Reduce information and noise
         cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
         cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0, 0);
-        /*cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
-        imshow("Grayscale Gaussian Blur", gray);*/
-
+        
+        if(displayCompleteProcess == 1){
+            cv::namedWindow( "Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
+            imshow("Grayscale Gaussian Blur", gray);
+        }
+        
         // Convert image to binary
         //cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
         cv::adaptiveThreshold(gray, bw, 200, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, 10);
-        /*cv::namedWindow( "Binary", cv::WINDOW_NORMAL);
-        imshow("Binary", bw);*/
+        if(displayCompleteProcess == 1){
+            cv::namedWindow( "Binary", cv::WINDOW_NORMAL);
+            imshow("Binary", bw);
+        }
 
         cont = frame.clone();
         // Find all the contours in the thresholded image        
@@ -109,11 +116,11 @@ int main(int argc, char **argv)
         /*for (int i = 0; i < contours.size(); i++)
         {
             cv::drawContours(cont, contours, static_cast<int>(i), cv::Scalar(0, 0, 255), 2);
-        }*/
-        /*cv::namedWindow( "Contour", cv::WINDOW_NORMAL);
+        }
+        cv::namedWindow( "Contour", cv::WINDOW_NORMAL);
         imshow("Contour", cont);*/
 
-        ///*** IDENTITY CIRCLES ***///
+        ///*** IDENTIFY CIRCLES ***///
         
         //Find the minimum bounding ellipse
         minEllipse.resize(contours.size());
@@ -141,14 +148,18 @@ int main(int argc, char **argv)
                 {
                     minEllipseSelected.push_back(minEllipse[i]);
                     minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
-                    //ellipse(cont, minEllipse[i], cv::Scalar(0,0,255), 2, 8 );
-                    //ellipse(cont, minEllipse[hierarchy[i][2]], cv::Scalar(0,0,255), 1, 8 );
+                    if(displayCompleteProcess == 1){        
+                        ellipse(cont, minEllipse[i], cv::Scalar(0,0,255), 2, 8 );
+                        ellipse(cont, minEllipse[hierarchy[i][2]], cv::Scalar(0,0,255), 1, 8 );
+                    }
                     centers.push_back(cv::Point2f((minEllipse[i].center.x + minEllipse[child_index].center.x) / 2, (minEllipse[i].center.y + minEllipse[child_index].center.y) / 2));                                     
                 }
             }
         }
-        /*cv::namedWindow( "Ellipse Fitting", cv::WINDOW_NORMAL);
-        imshow("Ellipse Fitting", cont);*/
+        if(displayCompleteProcess == 1){
+            cv::namedWindow( "Ellipse Fitting", cv::WINDOW_NORMAL);
+            imshow("Ellipse Fitting", cont);
+        }
 
         for(int i = 0; i < centers.size(); i++){
             sumX += centers[i].x;
@@ -205,9 +216,9 @@ int main(int argc, char **argv)
 
             if((cv::norm(corners[0] - corners[1]) - cv::norm(corners[2] - corners[3])) < thresholdDist && (cv::norm(corners[0] - corners[2]) - cv::norm(corners[1] - corners[3])) < thresholdDist){
                 frameCountCorrect++;
-                line(frame, corners[0], corners[1], cv::Scalar(200, 200, 200), 1, cv::LINE_8, 0);
-                line(frame, corners[1], corners[2], cv::Scalar(200, 200, 200), 1, cv::LINE_8, 0);
-                line(frame, corners[2], corners[3], cv::Scalar(200, 200, 200), 1, cv::LINE_8, 0);
+                line(frame, corners[0], corners[1], cv::Scalar(200, 80, 80), 1.5, cv::LINE_8, 0);
+                line(frame, corners[1], corners[2], cv::Scalar(200, 80, 80), 1.5, cv::LINE_8, 0);
+                line(frame, corners[2], corners[3], cv::Scalar(200, 80, 80), 1.5, cv::LINE_8, 0);
             }
       
             /// Put the rest in order
