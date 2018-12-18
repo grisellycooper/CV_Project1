@@ -12,9 +12,9 @@
 #define patternHeigh 4
 
 
-#define display 1
+#define display 0
 #define displayCompleteProcess 0
-#define displayContinuosly 1
+#define displayContinuosly 0
 #define printTime 0
 #define printFrameCount 1
 
