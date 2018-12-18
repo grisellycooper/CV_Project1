@@ -14,7 +14,7 @@
 
 #define display 1
 #define displayCompleteProcess 0
-#define displayContinuosly 0
+#define displayContinuosly 1
 #define printTime 0
 #define printFrameCount 1
 
@@ -70,18 +70,18 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
-    for( int o = 1; o< 6; o++ )
+    /*for( int o = 1; o< 6; o++ )
     {
         //string filename = samples::findFile(names[i]);
         std::string filename = "../../img/" + std::to_string(o) + ".png";
         cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);
-    
-    /*for (;;)
+    */
+    for (;;)
     {
         capture >> frame;
         if (frame.empty())
             break;
-*/
+
         frameCount++;        
         
         /// Restart variables
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
             /// 0 - 2 should be similar 1 - 3
             //std::cout<<"0-2: " << cv::norm(corners[0] - corners[2]) << " 1-3: " <<cv::norm(corners[1] - corners[3]) <<std::endl;
 
-            if((cv::norm(corners[0] - corners[1]) - cv::norm(corners[2] - corners[3])) < thresholdDist && (cv::norm(corners[0] - corners[2]) - cv::norm(corners[1] - corners[3])) < thresholdDist){
+            if(abs(cv::norm(corners[0] - corners[1]) - cv::norm(corners[2] - corners[3])) < thresholdDist && abs(cv::norm(corners[0] - corners[2]) - cv::norm(corners[1] - corners[3])) < thresholdDist){
                 frameCountCorrect++;
                 line(frame, corners[0], corners[1], cv::Scalar(200, 80, 80), 1.5, cv::LINE_8, 0);
                 line(frame, corners[1], corners[2], cv::Scalar(200, 80, 80), 1.5, cv::LINE_8, 0);
@@ -252,7 +252,8 @@ int main(int argc, char **argv)
                 if (frameCount % 20 == 0)
                 {
                     sumTime = sumTime/20.0;
-                    std::cout << "Frame: " << frameCount << " Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " ms." <<std::endl;
+                    //std::cout << "Frame: " << frameCount << " Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " ms." <<std::endl;
+                    std::cout << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) <<std::endl;
                     //std::cout << sumTime <<std::endl;
                     sumTime = 0.0;
                 }
