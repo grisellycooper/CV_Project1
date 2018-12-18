@@ -5,11 +5,19 @@
 
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
-//#define video_path "../../videos/padron1.avi"  // 12 Anillos
+#define video_path "../../videos/padron1.avi"  // 12 Anillos
 //#define video_path "../../videos/padron2.avi"  // 20 Anillos
 //#define video_path "../../videos/PadronAnillos_01.avi"
 #define patternWidth 5
 #define patternHeigh 4
+
+
+double distance_to_Line(cv::Point line_start, cv::Point line_end, cv::Point point)
+{
+	/*double normalLength = hypot(line_end.x - line_start.x, line_end.y - line_start.y);
+	double distance = (double)((point.x - line_start.x) * (line_end.y - line_start.y) - (point.y - line_start.y) * (line_end.x - line_start.x)) / normalLength;
+	return distance;*/
+}
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
@@ -18,19 +26,19 @@ int main(int argc, char **argv)
     /*std::string filename = "../../../videos/PadronAnillos_01.avi";
     cv::VideoCapture capture(filename);*/
 
-/*#ifdef video_path
+#ifdef video_path
     cv::VideoCapture capture(video_path);
 #else
     cv::VideoCapture capture(0);   // --> For video Capture
     capture.set(cv::CAP_PROP_FPS, 60); // ---> Cantidad de FPS caputrados por la camara
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-#endif*/
+#endif
 
-    /*if (!capture.isOpened())
-        throw "Error when reading steam_avi"; */
+    if (!capture.isOpened())
+        throw "Error when reading steam_avi"; 
     
-    //cv::Mat frame;
+    cv::Mat frame;
     /// Auxilaries
     cv::Mat gray, bw, cont, img;
     int frameCount = 0;
@@ -62,18 +70,18 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
-    for( int o = 1; o< 6; o++ )
+    /*for( int o = 1; o< 6; o++ )
     {
         //string filename = samples::findFile(names[i]);
         std::string filename = "../../img/" + std::to_string(o) + ".png";
-        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);
-    //for (;;)
-    //{
-        //capture >> frame;
-        //if (frame.empty())
-            //break;
+        cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);*/
+    for (;;)
+    {
+        capture >> frame;
+        if (frame.empty())
+            break;
 
-        //frameCount++;        
+        frameCount++;        
         /// Restart variables
         sumX = 0.0;
         sumY = 0.0;
@@ -254,18 +262,18 @@ int main(int argc, char **argv)
         centers.erase(centers.begin() + jj);
         
         
-        std::cout<<"Corners "<<corners.size()<<std::endl;
+        /*std::cout<<"Corners "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
             std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
-        }
+        }*/
 
         std::sort(corners.begin(), corners.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
         std::sort(centers.begin(), centers.end(), [](cv::Point2f const& f, cv::Point2f const& s){ return f.x < s.x; });
 
-        std::cout<<"X "<<corners.size()<<std::endl;
+        /*std::cout<<"X "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
             std::cout<<"("<<corners[i].x<<", "<<corners[i].y<<")"<<std::endl;
-        }
+        }*/
 
 
         if(corners[0].y > corners[1].y){            
@@ -309,10 +317,14 @@ int main(int argc, char **argv)
         slope  = (tmpCenters[0].y - tmpCenters[patterSize-patternWidth].y) / (tmpCenters[0].x - tmpCenters[patterSize-patternWidth].x)
         length = norm(tmpCenters[0] - tmpCenters[0])*/
 
+        //*** distance **//
+
+
         /*circle(frame,cv::Point2f(50,50), 1, cv::Scalar(0, 255, 255), 4, 8);
         circle(frame,cv::Point2f(250,250), 1, cv::Scalar(0, 255, 255), 4, 8);*/
         
         /// Draw a rectagle
+        
         /*cv::Rect rect = cv::boundingRect(centers);
         cv::rectangle(frame, rect, cv::Scalar(0, 255, 0));
         std::cout<<rect.height << " " <<rect.width <<std::endl;*/
@@ -338,6 +350,7 @@ int main(int argc, char **argv)
         
         cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
         imshow("Video Display", frame);
+        //cv::waitKey(20);
         //cv::waitKey();
 
         end = clock();
@@ -359,9 +372,10 @@ int main(int argc, char **argv)
         tmpCenters.clear();
         corners.clear();
     
-        int c = cv::waitKey();
-        if( c == 27 )
-            break;
+        if(cv::waitKey() == 'w') cv::waitKey(200);
+
+        if(cv::waitKey(10) == 27) break;
+
     }
     /*std::cout<<"Complete rings were detected in "<<frameCount20 <<" out of " <<frameCount<< " frames"<<std::endl;
     std::cout<<"10 "<<frameCount18 <<std::endl;
