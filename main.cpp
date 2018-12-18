@@ -6,18 +6,61 @@
 // richard
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
-//#define video_path "../../videos/padron1.avi"  // 12 Anillos
+#define video_path "../../videos/padron1.avi"  // 12 Anillos
 //#define video_path "../../videos/padron2.avi"  // 20 Anillos
 //#define video_path "../../videos/PadronAnillos_01.avi"
+
 #define patternWidth 5
 #define patternHeigh 4
+
+
+void getTotalCorners( const std::vector<cv::Point2f> &centers, std::vector<cv::Point2f> &corners)
+{
+    float Ax = corners[0].x;
+    float Ay = corners[1].y;
+
+    float Bx = corners[0].x;
+    float By = corners[1].y;
+
+    float Cx,Cy;
+    float A,B,C,side,area;
+    float ansArea = 0;
+    int   ind = 0;
+    std::vector<int> twoCornes(2,0);
+
+    for(int i=0;i<centers.size();i++)
+    {
+        Cx  = centers[i].x;
+        Cy  = centers[i].y;
+        A   = sqrt(((Bx-Ax)*(Bx-Ax))+((By-Ay)*(By-Ay)));
+        B   = sqrt(((Cx-Bx)*(Cx-Bx))+((Cy-By)*(Cy-By)));
+        C   = sqrt(((Ax-Cx)*(Ax-Cx))+((Ay-Cy)*(Ay-Cy)));
+        side= ((A+B+C)/2);
+        area=sqrt(side*(side-A)*(side-B)*(side-C));
+
+        if(area>ansArea)
+        {
+            twoCornes[0] = ind;
+            twoCornes[1] = i;
+            ansArea      = area;            
+            ind          = i; 
+        }
+    } 
+    corners.push_back(centers[twoCornes[0]]);
+    corners.push_back(centers[twoCornes[1]]);
+}
+
+    
+
 
 /* Try to detect circles in a video using HoughCircles function */
 int main(int argc, char **argv)
 {
     int patterSize = patternHeigh * patternWidth;
-    /*std::string filename = "../../../videos/PadronAnillos_01.avi";
-    cv::VideoCapture capture(filename);*/
+    
+
+    std::string filename = "../../../videos/PadronAnillos_01.avi";
+    cv::VideoCapture capture(filename);
 
 /*#ifdef video_path
     cv::VideoCapture capture(video_path);
@@ -28,10 +71,10 @@ int main(int argc, char **argv)
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
 #endif*/
 
-    /*if (!capture.isOpened())
-        throw "Error when reading steam_avi"; */
+    if (!capture.isOpened())
+        throw "Error when reading steam_avi"; 
     
-    //cv::Mat frame;
+    cv::Mat frame;
     /// Auxilaries
     cv::Mat gray, bw, cont, img;
     int frameCount = 0;
@@ -63,18 +106,22 @@ int main(int argc, char **argv)
     /// Time algorithm
     clock_t start, end;
 
+
+    /*
     for( int o = 1; o< 6; o++ )
     {
         //string filename = samples::findFile(names[i]);
         std::string filename = "../../img/" + std::to_string(o) + ".png";
         cv::Mat frame = cv::imread(filename, cv::IMREAD_COLOR);
-    //for (;;)
-    //{
-        //capture >> frame;
-        //if (frame.empty())
-            //break;
 
-        //frameCount++;        
+    */
+    for (;;)
+    {
+        capture >> frame;
+        if (frame.empty())
+            break;
+
+        frameCount++;        
         /// Restart variables
         sumX = 0.0;
         sumY = 0.0;
@@ -230,6 +277,7 @@ int main(int argc, char **argv)
             std::cout<<"("<<centers[x].x<<", "<<centers[x].y<<")"<<std::endl;
         }*/
 
+        /*
         distMax = 0.0;
         distTmp = 0.0;        
 
@@ -252,8 +300,11 @@ int main(int argc, char **argv)
         
         /// Erase
         centers.erase(centers.begin() + ii);
-        centers.erase(centers.begin() + jj);
-        
+        centers.erase(centers.begin() + jj);        
+        */
+
+        getTotalCorners(centers,corners);
+
         
         std::cout<<"Corners "<<corners.size()<<std::endl;
         for(int i = 0; i < corners.size(); i++){
