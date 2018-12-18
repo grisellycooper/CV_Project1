@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+// no tengo time
 
 //#define video_path "../../Test/videos/PadronAnillos_01.avi"
 #define video_path "../../videos/padron1.avi"  // 12 Anillos
@@ -132,12 +133,7 @@ int main(int argc, char **argv)
             {
                 //Check distances between parent's center and child's center
                 //Should be less than threshold
-                /*c_x = minEllipse[i].center.x;
-                c_y = minEllipse[i].center.y;
-                child_c_x = minEllipse[child_index].center.x;
-                child_c_y = minEllipse[child_index].center.y;*/
                 distance = cv::norm(minEllipse[i].center - minEllipse[child_index].center); 
-                //distance = sqrt(pow((c_x - child_c_x), 2) + pow((c_y - child_c_y), 2));
                 //std::cout<<"dist: " <<distance <<std::endl;
                 if (distance < threshold)
                 {
