@@ -2,7 +2,7 @@
 
 #define threshold 0.75f
 #define displayCompletePreprocess 0
-#define displayCompleteFilter1 1
+#define displayCompleteFilter1 0
 #define displayCompleteFilter2 0
 
 int found;
@@ -146,196 +146,199 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     }
 }
 
-bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f>& pointbuf,
-                   std::vector<cv::Point2f>& previousPointbuf, bool prevoiusFound)
+bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &pointbuf,
+                   std::vector<cv::Point2f> &previousPointbuf, bool prevoiusFound)
 {
     int iPatternSize = patternSize.width * patternSize.height;
-    std::vector<cv::Point2f> tmpCenters;
+    std::vector<cv::Point2f> tmpPointBuf;
     bool orderFound;
-    cv::Mat test2;
+    cv::Mat test2 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
 
-    tmpCenters = pointbuf;
+    tmpPointBuf = pointbuf;
 
     if (prevoiusFound)
     {
         float currDist, minDist;
-        int minIndex, c;
+        int minIndex, c = 0;
         for (int k = 0; k < iPatternSize; k++)
         {
             cv::Point2f tmp = previousPointbuf[k];
             minDist = 1000.0;
             minIndex = 0;
-            for (int i = 0; i < tmpCenters.size(); i++)
+            for (int i = 0; i < tmpPointBuf.size(); i++)
             {
-                currDist = cv::norm(previousPointbuf[k] - tmpCenters[i]);
+                currDist = cv::norm(previousPointbuf[k] - tmpPointBuf[i]);
                 if (minDist > currDist)
                 {
                     minDist = currDist;
                     minIndex = i;
                 }
             }
-            
+
             /// Verify the displacement between posible same points, the displacement shouldnt be large
             if (minDist < 3.0)
             {
-                c++;    /// count points which verify min displacement
-                pointbuf[k] = tmpCenters[minIndex];
+                c++; /// count points which verify min displacement
+                pointbuf[k] = tmpPointBuf[minIndex];
             }
             else
-            {
-                //std::cout<<"mindist: " << minDist <<std::endl;
+            { /* std::cout<<"mindist: " << minDist <<std::endl; */
             }
         }
 
-        /// Points that verify min displacment should be the same size as the patternSize 
+        /// Points that verify min displacment should be the same size as the patternSize
         if (c == iPatternSize)
         {
-            if(displayCompleteFilter2)
+            if (displayCompleteFilter2 == 1)
             {
                 for (int i = 0; i < iPatternSize; i++)
                 {
                     circle(test2, pointbuf[i], 1, cv::Scalar(0, 0, 255), 4, 8);
                     cv::putText(test2, std::to_string(i), pointbuf[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
                 }
-            }            
+
+                cv::namedWindow("Find Grid", cv::WINDOW_NORMAL);
+                imshow("Find Grid", test2);
+            }
             return true;
-        }        
+        }
     }
     else
     {
-        orderFound = verifyOrder(tmpCenters, patternSize.height, patternSize.width);
+        orderFound = verifyOrder(tmpPointBuf, patternSize.height, patternSize.width);
 
         if (orderFound)
         {
             pointbuf.clear();
             for (int i = 0; i < iPatternSize; i++)
             {
-                pointbuf.push_back(tmpCenters[i]);
-                if(displayCompleteFilter2)
-                {
-                    circle(test2, tmpCenters[i], 1, cv::Scalar(0, 0, 255), 4, 8);
-                    cv::putText(test2, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
-                }                
+                pointbuf.push_back(tmpPointBuf[i]);
             }
+
+            if (displayCompleteFilter2 == 1)
+            {
+                for (int i = 0; i < iPatternSize; i++)
+                {
+                    circle(test2, pointbuf[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+                    cv::putText(test2, std::to_string(i), pointbuf[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+                }
+
+                cv::namedWindow("Find Grid", cv::WINDOW_NORMAL);
+                imshow("Find Grid", test2);
+            }
+
             return true;
         }
     }
+
     return false;
 }
 
-bool verifyOrder(std::vector<cv::Point2f> &probableCPs, int num_rows, int num_cols){
-    int n = probableCPs.size();
+bool verifyOrder(std::vector<cv::Point2f> &tmpPB, int patternHeigh, int patternWidth)
+{
+    int n = tmpPB.size();
     std::vector<cv::Vec4f> lines;
-    std::vector< std::vector<int> > combinations = GenerateCombinations(probableCPs.size(),num_cols);
+    std::vector<std::vector<int>> combinations = GenerateCombinations(tmpPB.size(), patternWidth); /// Generate all posible combinations of patternWidth among points
     std::vector<cv::Vec4f> preSelectedLines;
-    std::vector<std::vector<int> > combination_preSelectedLines;
-    for(int i = 0; i < combinations.size();i++){
-        std::vector<cv::Point2f> tmpPoints(num_cols);
-        cv::Vec4f tmpLine;
-        for(int j = 0; j < num_cols; j++){
-            tmpPoints[j] = probableCPs[ combinations[i][j] ];
-        }
-        fitLine(tmpPoints,tmpLine,cv::DIST_L2,0,0.01,0.01);
-        float vx = tmpLine[0],vy = tmpLine[1], x0 = tmpLine[2],y0 = tmpLine[3];
-        cv::Point2f a = cv::Point2f(x0,y0), b = cv::Point2f(vx,vy);
+    std::vector<std::vector<int>> preSelectedLinesCombinations;
 
-        std::vector<float> distances;
-        for(int k = 0; k < num_cols; k++){
-            //Calculamos la distancia del punto a la recta y almacenamos para el calculo de la desviacion
-            float t = ( tmpPoints[k].dot(b) - a.dot(b) ) / (cv::norm(b) * cv::norm(b));
-            float dist = cv::norm(tmpPoints[k] - (a + t * b));
-            distances.push_back(dist);
+    std::vector<cv::Point2f> tmpLinePoints(patternWidth);
+    cv::Vec4f tmpLine;
+    float dist, maxDist, t;
+
+    for (int i = 0; i < combinations.size(); i++)
+    {
+        /// Get the points that belong to each line
+        for (int j = 0; j < patternWidth; j++)
+        {
+            tmpLinePoints[j] = tmpPB[combinations[i][j]];
         }
 
-        float stddev = StandarDesviation(distances);
+        /// Detect lines
+        ///tmpLine -> [vx, vy, x0, y0] -> (vx, vy) is a normalized vector collinear to the line and (x0, y0) is a point on the line
+        fitLine(tmpLinePoints, tmpLine, cv::DIST_L2, 0, 0.01, 0.01);
+        cv::Point2f a = cv::Point2f(tmpLine[2], tmpLine[3]), b = cv::Point2f(tmpLine[0], tmpLine[1]);
 
-        //Si el error de la linea no es mucho. Seleccionamos la linea
-        if(stddev < 0.5f){
+        maxDist = 0.0;
+        for (int k = 0; k < patternWidth; k++)
+        {
+            /// Get the distance of the farest away point to the line
+            t = (tmpLinePoints[k].dot(b) - a.dot(b)) / (cv::norm(b) * cv::norm(b));
+            dist = cv::norm(tmpLinePoints[k] - (a + t * b));
+            if (maxDist < dist)
+                maxDist = dist;
+        }
+
+        /// The distance should be less that a threashold, if it fits, its selected
+        if (maxDist < 0.5f)
+        {
+            //std::cout<<"Dist: "<<maxDist <<std::endl;
             preSelectedLines.push_back(tmpLine);
-            //Guardamos la Combinacion
-            combination_preSelectedLines.push_back(combinations[i]);
+            preSelectedLinesCombinations.push_back(combinations[i]);
+        }
+    }
+    //std::cout<<"PreSelecSize: "<<preSelectedLines.size() <<std::endl;
+
+    /// Validate line selection, shoud be same size as patternHeigh
+    if (preSelectedLines.size() == patternHeigh)
+    {
+        std::vector<float> y_intersections(patternHeigh);
+        float y;
+        for (int i = 0; i < patternHeigh; i++)
+        {
+            tmpLine = preSelectedLines[i];
+            t = -tmpLine[2] / tmpLine[0];
+            y = tmpLine[3] + t * tmpLine[1];
+            y_intersections[i] = y;
         }
 
-    }
-
-    // Apply some filters here to verify line selection
-    // Then Order Points and Store in CPs(Hard verification of only 20 Ordered and Aligned Control Points)
-    // Acordemonos que ya seleccionamos solo lineas con 5 puntos
-    if(preSelectedLines.size() == num_rows){
-        //Tenemos que ordenar las lineas. (Recordemos que son lineas paralelas)
-        //Primero verificamos la pendiente
-
-        //LINE ORDERING
-            //Recordemos la grilla que presenta openCV 
-            // -------> x+
-            // |
-            // |
-            // y+
-
-            cv::Vec4f Line = preSelectedLines[0];
-            float vx = Line[0],vy = Line[1], x0 = Line[2],y0 = Line[3];
-            //Pendiente
-            float slope = vy/vx;
-            if(abs(slope) < 5.0f){ //Evaluamos las pendientes de casi 80 grados (Revisar esta funcion)
-                std::vector<float> y_intersection(num_rows);
-                //Calcular el punto de interseccion por el eje y
-                for(int i = 0; i < num_rows; i++){
-                    cv::Vec4f tmpLine = preSelectedLines[0];
-                    float vx = tmpLine[0],vy = tmpLine[1], x0 = tmpLine[2],y0 = tmpLine[3];
-
-                    float t = -x0 / vx;
-                    float y = y0 + t*vy;
-
-                    y_intersection[i] = y;
-                }
-
-                //Realizamos un bubble sort en base a las intersecciones con el eje y
-                //ordenamiento por burbuja
-                bool swapp = true;
-                while(swapp)
+        /// Get lines in order by Y-axes
+        bool swapp = true;
+        while (swapp)
+        {
+            swapp = false;
+            for (int i = 0; i < preSelectedLines.size() - 1; i++)
+            {
+                if (y_intersections[i] > y_intersections[i + 1])
                 {
-                    swapp = false;
-                    for (int i = 0; i < preSelectedLines.size()-1; i++)
-                    {
-                        if (y_intersection[i] > y_intersection[i+1] ){
-                            //Cambiamos en todos nuestros vectores
-                            std::swap(y_intersection[i],y_intersection[i+1]);
-                            std::swap(preSelectedLines[i],preSelectedLines[i+1]);
-                            std::swap(combination_preSelectedLines[i],combination_preSelectedLines[i+1]);
-                            swapp = true;
-                        }
-                    }
-                }// Fin del ordenamiento
-
-                // Para Cada Linea obtener los CP segun la combinacion y ordenarlos por el eje X
-                // Obtenemos los puntos desde el CP
-
-                std::vector<cv::Point2f> tmpCPs;
-                for(int i = 0; i < num_rows; i++){
-                    std::vector<cv::Point2f> tmpCenters(num_cols);
-                    for(int j = 0; j < num_cols; j++){
-                        tmpCenters[j] = probableCPs[ combination_preSelectedLines[i][j] ];
-                    }
-                    sort(tmpCenters.begin(), tmpCenters.end(),cmpx);
-                    for(int j = 0; j < num_cols; j++){
-                        tmpCPs.push_back(tmpCenters[j]);
-                    }
+                    std::swap(y_intersections[i], y_intersections[i + 1]);
+                    std::swap(preSelectedLines[i], preSelectedLines[i + 1]);
+                    std::swap(preSelectedLinesCombinations[i], preSelectedLinesCombinations[i + 1]);
+                    swapp = true;
                 }
+            }
+        }
 
-                probableCPs.clear();
-                probableCPs = tmpCPs;
+        /// Get points in order by X-axes
+        std::vector<cv::Point2f> tmpBuff;
+        for (int i = 0; i < patternHeigh; i++)
+        {
+            std::vector<cv::Point2f> tmpCenters(patternWidth);
+            for (int j = 0; j < patternWidth; j++)
+            {
+                tmpCenters[j] = tmpPB[preSelectedLinesCombinations[i][j]];
+            }
+            std::sort(tmpCenters.begin(), tmpCenters.end(), [](cv::Point2f const &f, cv::Point2f const &s) { return f.x < s.x; });
+            for (int j = 0; j < patternWidth; j++)
+            {
+                tmpBuff.push_back(tmpCenters[j]);
+            }
+        }
 
-                return true;
-            }      
+        tmpPB.clear();
+        tmpPB = tmpBuff;
+
+        return true;
     }
     return false;
 }
 
-std::vector< std::vector<int> > GenerateCombinations(int n, int r){
-    std::vector< std::vector<int> > v;
+std::vector<std::vector<int>> GenerateCombinations(int n, int r)
+{
+    std::vector<std::vector<int>> v;
 
     int arr[n];
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
         arr[i] = i;
 
     printCombination(v, arr, n, r);
@@ -343,14 +346,14 @@ std::vector< std::vector<int> > GenerateCombinations(int n, int r){
     return v;
 }
 
-void printCombination(std::vector< std::vector<int> >& v, int arr[], int n, int r)
+void printCombination(std::vector<std::vector<int>> &v, int arr[], int n, int r)
 {
     std::vector<int> data(r);
 
-    combinationUtil(v, arr, data, 0, n-1, 0, r);
+    combinationUtil(v, arr, data, 0, n - 1, 0, r);
 }
- 
-void combinationUtil(std::vector< std::vector<int> >& v, int arr[], std::vector<int> &data, int start, int end,
+
+void combinationUtil(std::vector<std::vector<int>> &v, int arr[], std::vector<int> &data, int start, int end,
                      int index, int r)
 {
     if (index == r)
@@ -358,34 +361,37 @@ void combinationUtil(std::vector< std::vector<int> >& v, int arr[], std::vector<
         v.push_back(data);
         return;
     }
- 
-    for (int i=start; i<=end && end-i+1 >= r-index; i++)
+
+    for (int i = start; i <= end && end - i + 1 >= r - index; i++)
     {
         data[index] = arr[i];
-        combinationUtil(v, arr, data, i+1, end, index+1, r);
+        combinationUtil(v, arr, data, i + 1, end, index + 1, r);
     }
 }
 
-float StandarDesviation(const std::vector<float> & values ){
-	int n = values.size();
+float StandarDesviation(const std::vector<float> &values)
+{
+    int n = values.size();
     float dmean = 0.0;
     float dstddev = 0.0;
 
     // Mean standard algorithm
     for (int i = 0; i < n; ++i)
     {
-       dmean += values[i];
+        dmean += values[i];
     }
     dmean /= (float)n;
 
     // Standard deviation standard algorithm
     std::vector<float> var(n);
 
-    for (int i = 0; i < n; ++i){
+    for (int i = 0; i < n; ++i)
+    {
         var[i] = (dmean - values[i]) * (dmean - values[i]);
     }
 
-    for (int i = 0; i < n; ++i){
+    for (int i = 0; i < n; ++i)
+    {
         dstddev += var[i];
     }
     dstddev = sqrt(dstddev / (float)n);
@@ -394,6 +400,7 @@ float StandarDesviation(const std::vector<float> & values ){
     return dstddev;
 }
 
-bool cmpx(cv::Point2f a, cv::Point2f b){
+bool cmpx(cv::Point2f a, cv::Point2f b)
+{
     return a.x < b.x;
 }
