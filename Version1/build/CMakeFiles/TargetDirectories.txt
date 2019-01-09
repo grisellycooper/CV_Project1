@@ -1,3 +1,0 @@
-/home/sol/MCS/Imagenes/CV_Project1/Version1/build/CMakeFiles/rebuild_cache.dir
-/home/sol/MCS/Imagenes/CV_Project1/Version1/build/CMakeFiles/output.dir
-/home/sol/MCS/Imagenes/CV_Project1/Version1/build/CMakeFiles/edit_cache.dir

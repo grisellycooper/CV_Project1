@@ -3,17 +3,18 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include "include/patrecog.h"
+#include "include/camcalib.h"
 
 #define display 0
 #define displayTest 0
 #define displayContinuosly 1
-#define printFrameCount 1
-#define printTime 1
+#define printFrameCount 0
+#define printTime 0
 
-#define video_path "../../../videos/PadronCirculos_01.avi" // 4 x 11 circulos
+//#define video_path "../../../videos/PadronCirculos_01.avi" // 4 x 11 circulos
 
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
-//#define video_path "../../../videos/padron2.avi" // 20 Anillos
+#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
 
 enum Pattern
@@ -23,13 +24,15 @@ enum Pattern
     ASYMMETRIC_CIRCLES_GRID,
     RINGS_GRID
 };
-cv::Size patternSizes[] = {cv::Size(9, 6), cv::Size(4, 5), cv::Size(4, 11), cv::Size(6, 5)}; // Accoring to pattern
+cv::Size patternSizes[] = {cv::Size(9, 6), cv::Size(4, 5), cv::Size(4, 11), cv::Size(5, 4)}; // Accoring to pattern
+float ctrlPointDistances[] = {0.0, 0.0, 0.02315,0.04540}; // Meters real distances
 
 int main()
 {
-    Pattern pattern = ASYMMETRIC_CIRCLES_GRID;
+    Pattern pattern = RINGS_GRID;
     int patternSize = patternSizes[pattern].width * patternSizes[pattern].height;
     cv::Mat frame, view;
+    float frWidth, frHeight, frFPS;
 
     bool found = false;
     bool previousFound = false;
@@ -38,6 +41,19 @@ int main()
     std::vector<cv::Vec4i> hierarchy;
     std::vector<cv::Point2f> pointbuf;
     std::vector<cv::Point2f> prevoiusPointbuf;
+
+    /// Camera Calibration variables
+    int nrSamples = 15;
+
+    std::vector<std::vector<cv::Point3f> > objectPoints;
+    std::vector<std::vector<cv::Point2f> > imagePoints;
+    std::vector<cv::Mat> rvecs;
+    std::vector<cv::Mat> tvecs;
+    cv::Mat cameraMatrix;
+    cv::Mat distCoeffs;
+    std::vector<float> perViewError;
+    double rms;
+    
 
     /// Testing variables
     int frameCount = 0;
@@ -58,6 +74,13 @@ int main()
         capture >> frame;
         if (frame.empty())
             break;
+
+        /// Getting frame features
+        frWidth = capture.get(cv::CAP_PROP_FRAME_WIDTH );
+        frHeight = capture.get(cv::CAP_PROP_FRAME_HEIGHT );
+        frFPS =  capture.get(cv::CAP_PROP_FPS);
+
+        //std::cout<<"Frame: " << frWidth <<" x " <<frHeight <<" - "<<frFPS<<std::endl;
 
         frameCount++;
         start = clock();
@@ -80,13 +103,13 @@ int main()
             found = cv::findCirclesGrid(frame, patternSizes[pattern], pointbuf);
             break;
         case ASYMMETRIC_CIRCLES_GRID:
-            found = findCirclesGrid(frame, patternSizes[pattern], pointbuf, cv::CALIB_CB_ASYMMETRIC_GRID);
+            found = cv::findCirclesGrid(frame, patternSizes[pattern], pointbuf, cv::CALIB_CB_ASYMMETRIC_GRID);
             break;
         case RINGS_GRID:
             ///*** FIND RINGS GRID ***///
             if (pointbuf.size() == patternSize)
             {
-                found = findRingsGrid(frame, patternSizes[pattern], pointbuf, prevoiusPointbuf, previousFound);
+                found = findRingsGrid(frame, patternSizes[pattern], pointbuf, prevoiusPointbuf, previousFound);                
             }
             else
             {
@@ -95,8 +118,9 @@ int main()
                 if (pointbuf.size() < patternSize)
                     frameCountLess++;
                 previousFound = false;
+
             }
-            //found = findRingsGrid(view, patternSizes[pattern], pointbuf);
+            
             break;
         default:
             found = false;
@@ -104,11 +128,33 @@ int main()
 
         if (found)
         {
+            end = clock();
+            sumTime += (end - start) / (double)(CLOCKS_PER_SEC / 1000);
+
             //std::cout<<" Found "<<std::endl;
             previousFound = true;
             prevoiusPointbuf = pointbuf;
-            cv::drawChessboardCorners(frame, cv::Size(patternSizes[pattern].width, patternSizes[pattern].height), pointbuf, found);
+            cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
             frameCountFound++;
+
+            //Add pointBuffer to imagePoint
+            if(frameCountFound % nrSamples == 0)
+                imagePoints.push_back(pointbuf);
+            
+            /// When it riches predefine nro of Sample, calibrate camera
+            if(imagePoints.size() == 25){
+                //Calibrate camera
+                objectPoints.resize(1);
+                getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
+                objectPoints.resize(imagePoints.size(),objectPoints[0]);
+
+                rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
+    			std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
+                //std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
+                //std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
+                std::cout << "----------------------------" << std::endl;
+                imagePoints.clear();
+            }   
         }
         else
         {
@@ -133,9 +179,7 @@ int main()
         if (printTime == 1)
         {
             //std::cout<<" Time:  ";
-            end = clock();
-            sumTime += (end - start) / (double)(CLOCKS_PER_SEC / 1000);
-
+            
             /*if (frameCount % 20 == 0)
             {
                 sumTime = sumTime / 20.0;
