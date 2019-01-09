@@ -43,7 +43,7 @@ int main()
     std::vector<cv::Point2f> prevoiusPointbuf;
 
     /// Camera Calibration variables
-    int nrSamples = 15;
+    int nrSamples = 20;
 
     std::vector<std::vector<cv::Point3f> > objectPoints;
     std::vector<std::vector<cv::Point2f> > imagePoints;
@@ -71,7 +71,10 @@ int main()
 
     for (;;)
     {
-        capture >> frame;
+        //std::string filename = "../data/InnerCircles" + std::to_string(i) + ".jpg";
+        //frame = cv::imread(filename, cv::IMREAD_COLOR);
+        
+        capture >> frame;        
         if (frame.empty())
             break;
 
@@ -79,6 +82,10 @@ int main()
         frWidth = capture.get(cv::CAP_PROP_FRAME_WIDTH );
         frHeight = capture.get(cv::CAP_PROP_FRAME_HEIGHT );
         frFPS =  capture.get(cv::CAP_PROP_FPS);
+
+        //frWidth = frame.size().width;
+        //frHeight = frame.size().height;
+        //frFPS =  capture.get(cv::CAP_PROP_FPS);        
 
         //std::cout<<"Frame: " << frWidth <<" x " <<frHeight <<" - "<<frFPS<<std::endl;
 
@@ -138,20 +145,24 @@ int main()
             frameCountFound++;
 
             //Add pointBuffer to imagePoint
-            if(frameCountFound % nrSamples == 0)
+            if(frameCountFound % nrSamples == 0){
                 imagePoints.push_back(pointbuf);
+                //std::cout << imagePoints.size() <<" ";
+            }
+                
             
             /// When it riches predefine nro of Sample, calibrate camera
-            if(imagePoints.size() == 25){
+            if(imagePoints.size() == 15){
                 //Calibrate camera
                 objectPoints.resize(1);
                 getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
                 objectPoints.resize(imagePoints.size(),objectPoints[0]);
 
                 rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
-    			std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
-                //std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
-                //std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
+    			std::cout <<std::endl;
+                std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
+                std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
+                std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
                 std::cout << "----------------------------" << std::endl;
                 imagePoints.clear();
             }   

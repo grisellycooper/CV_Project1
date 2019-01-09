@@ -134,10 +134,10 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     if (displayCompleteFilter1 == 1)
     {
         cv::Mat test1 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
-        for (int i = 0; i < tmpCenters.size(); i++)
+        circle(test1, avg, 1, cv::Scalar(255, 0, 0), 4, 8);            
+        for (int i = 0; i < pointbuf.size(); i++)
         {
-            circle(test1, avg, 1, cv::Scalar(255, 0, 0), 4, 8);
-            circle(test1, tmpCenters[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+            circle(test1, pointbuf[i], 1, cv::Scalar(0, 0, 255), 4, 8);
             //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
         }
 
