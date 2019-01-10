@@ -369,38 +369,3 @@ void combinationUtil(std::vector<std::vector<int>> &v, int arr[], std::vector<in
     }
 }
 
-float StandarDesviation(const std::vector<float> &values)
-{
-    int n = values.size();
-    float dmean = 0.0;
-    float dstddev = 0.0;
-
-    // Mean standard algorithm
-    for (int i = 0; i < n; ++i)
-    {
-        dmean += values[i];
-    }
-    dmean /= (float)n;
-
-    // Standard deviation standard algorithm
-    std::vector<float> var(n);
-
-    for (int i = 0; i < n; ++i)
-    {
-        var[i] = (dmean - values[i]) * (dmean - values[i]);
-    }
-
-    for (int i = 0; i < n; ++i)
-    {
-        dstddev += var[i];
-    }
-    dstddev = sqrt(dstddev / (float)n);
-    //std::cout << "Mean: " << dmean << "   StdDev: " << dstddev << std::endl;
-
-    return dstddev;
-}
-
-bool cmpx(cv::Point2f a, cv::Point2f b)
-{
-    return a.x < b.x;
-}
