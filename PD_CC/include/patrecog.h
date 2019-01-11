@@ -13,6 +13,7 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f>& 
                     std::vector<cv::Point2f>& previousPointbuf, bool prevoiusFound);
 
 bool verifyOrder(std::vector<cv::Point2f> &tmpPB, int patternHeigh, int patternWidth);
+float StandarDesviation(const std::vector<float> & values );
 std::vector< std::vector<int> > GenerateCombinations(int n, int r);
 void printCombination(std::vector< std::vector<int> >& v, int arr[], int n, int r);
 void combinationUtil(std::vector< std::vector<int> >& v, int arr[], std::vector<int> &data, int start, int end, int index, int r);

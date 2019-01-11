@@ -154,14 +154,16 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
     bool orderFound;
     cv::Mat test2 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
 
-    tmpPointBuf = pointbuf;
-
+    tmpPointBuf = pointbuf;  
+    prevoiusFound = false;  
     if (prevoiusFound)
     {
-        float currDist, minDist;
+        float currDist, minDist, stdv;
         int minIndex, c = 0;
+        std::vector<float> distances;
         for (int k = 0; k < iPatternSize; k++)
         {
+            //std::cout<<"*1 "<<std::endl;
             cv::Point2f tmp = previousPointbuf[k];
             minDist = 1000.0;
             minIndex = 0;
@@ -174,21 +176,27 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
                     minIndex = i;
                 }
             }
-
+            distances.push_back(cv::norm(previousPointbuf[k] - tmpPointBuf[minIndex]));
+            pointbuf[k] = tmpPointBuf[minIndex];
+            //std::cout<<"mindist: "<< minDist <<std::endl;
             /// Verify the displacement between posible same points, the displacement shouldnt be large
-            if (minDist < 3.0)
+            /*if (minDist < 3.0)
             {
                 c++; /// count points which verify min displacement
                 pointbuf[k] = tmpPointBuf[minIndex];
             }
             else
             { /* std::cout<<"mindist: " << minDist <<std::endl; */
-            }
+            //}
         }
+        stdv = StandarDesviation(distances);
+        //std::cout<<"std: " << stdv <<std::endl;
 
         /// Points that verify min displacment should be the same size as the patternSize
-        if (c == iPatternSize)
-        {
+        /*if (c == iPatternSize)
+        {*/
+        if(stdv < 2.0){
+            //pointbuf[k] = tmpPointBuf[minIndex];
             if (displayCompleteFilter2 == 1)
             {
                 for (int i = 0; i < iPatternSize; i++)
@@ -209,6 +217,7 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
 
         if (orderFound)
         {
+            //std::cout<<"  Order found -  ";
             pointbuf.clear();
             for (int i = 0; i < iPatternSize; i++)
             {
@@ -228,9 +237,8 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
             }
 
             return true;
-        }
+        }        
     }
-
     return false;
 }
 
@@ -331,6 +339,34 @@ bool verifyOrder(std::vector<cv::Point2f> &tmpPB, int patternHeigh, int patternW
         return true;
     }
     return false;
+}
+
+float StandarDesviation(const std::vector<float> & values ){
+	int n = values.size();
+    float dmean = 0.0;
+    float dstddev = 0.0;
+
+    // Mean standard algorithm
+    for (int i = 0; i < n; ++i)
+    {
+       dmean += values[i];
+    }
+    dmean /= (float)n;
+
+    // Standard deviation standard algorithm
+    std::vector<float> var(n);
+
+    for (int i = 0; i < n; ++i){
+        var[i] = (dmean - values[i]) * (dmean - values[i]);
+    }
+
+    for (int i = 0; i < n; ++i){
+        dstddev += var[i];
+    }
+    dstddev = sqrt(dstddev / (float)n);
+    //std::cout << "Mean: " << dmean << "   StdDev: " << dstddev << std::endl;
+
+    return dstddev;
 }
 
 std::vector<std::vector<int>> GenerateCombinations(int n, int r)
