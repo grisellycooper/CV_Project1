@@ -1,6 +1,6 @@
 #include "../include/patrecog.h"
 
-#define threshold 0.75f
+#define threshold 0.95f
 #define displayCompletePreprocess 0
 #define displayCompleteFilter1 0
 #define displayCompleteFilter2 0
@@ -25,7 +25,7 @@ void preprocessImage(cv::Mat src, cv::Mat output,
 
     // Convert image to binary
     //cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-    cv::adaptiveThreshold(gray, bw, 200, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, 10);
+    cv::adaptiveThreshold(gray, bw, 210, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 25, 12);
     if (displayCompletePreprocess == 1)
     {
         cv::namedWindow("Binary", cv::WINDOW_NORMAL);
@@ -57,6 +57,8 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     std::vector<cv::RotatedRect> minEllipseSelected;
     std::vector<cv::Point2f> tmpCenters;
 
+    cv::Mat test1 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
+
     //float w, h, c_x, c_y, child_c_x, child_c_y, distance;
     //float sumX, sumY,cpX, cpY;
     float distance;
@@ -81,6 +83,7 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     for (int i = 0; i < contours.size(); i++)
     {
         child_index = hierarchy[i][2];
+        //std::cout<<"*  " <<std::endl;
         if (child_index != -1 && hierarchy[child_index][2] == -1) //Check out for child but not grandchild
         {
             //Check distances between parent's center and child's center
@@ -91,11 +94,11 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
             {
                 minEllipseSelected.push_back(minEllipse[i]);
                 minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
-                /*if (displayCompleteProcess == 1)
+                if (displayCompletePreprocess == 1)
                 {
-                    ellipse(cont, minEllipse[i], cv::Scalar(0, 0, 255), 2, 8);
-                    ellipse(cont, minEllipse[hierarchy[i][2]], cv::Scalar(0, 0, 255), 1, 8);
-                }*/
+                    ellipse(test1, minEllipse[i], cv::Scalar(0, 0, 255), 2, 8);
+                    ellipse(test1, minEllipse[hierarchy[i][2]], cv::Scalar(0, 0, 255), 1, 8);
+                }
                 tmpCenters.push_back(cv::Point2f((minEllipse[i].center.x + minEllipse[child_index].center.x) / 2, (minEllipse[i].center.y + minEllipse[child_index].center.y) / 2));
             }
         }
@@ -133,7 +136,7 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
 
     if (displayCompleteFilter1 == 1)
     {
-        cv::Mat test1 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
+        
         circle(test1, avg, 1, cv::Scalar(255, 0, 0), 4, 8);            
         for (int i = 0; i < pointbuf.size(); i++)
         {
@@ -214,10 +217,9 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
     else
     {
         orderFound = verifyOrder(tmpPointBuf, patternSize.height, patternSize.width);
-
         if (orderFound)
         {
-            //std::cout<<"  Order found -  ";
+            
             pointbuf.clear();
             for (int i = 0; i < iPatternSize; i++)
             {
@@ -276,11 +278,11 @@ bool verifyOrder(std::vector<cv::Point2f> &tmpPB, int patternHeigh, int patternW
             if (maxDist < dist)
                 maxDist = dist;
         }
-
+        //std::cout<<"Dist: "<<maxDist <<std::endl;
         /// The distance should be less that a threashold, if it fits, its selected
-        if (maxDist < 0.5f)
+        if (maxDist < threshold)
         {
-            //std::cout<<"Dist: "<<maxDist <<std::endl;
+            
             preSelectedLines.push_back(tmpLine);
             preSelectedLinesCombinations.push_back(combinations[i]);
         }

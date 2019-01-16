@@ -8,7 +8,7 @@
 #define display 1
 #define displayTest 0
 #define displayContinuosly 1
-#define printFrameCount 0
+#define printFrameCount 1
 #define printTime 0
 
 //#define video_path "../../../videos/PadronCirculos_02.avi" // 4 x 11 circulos
@@ -60,8 +60,13 @@ int main()
     /// Camera Calibration variables
     int nrSkip = 20;
     int nrSamples = 25;
+    bool undistort = false;
 
-    std::vector<std::vector<cv::Point3f>> objectPoints;
+    /// Fronto Parallel
+    std::vector<cv::Mat> selectedFrames;
+        
+
+    //std::vector<std::vector<cv::Point3f>> objectPoints;
     std::vector<std::vector<cv::Point2f>> imagePoints;
     std::vector<cv::Mat> rvecs;
     std::vector<cv::Mat> tvecs;
@@ -69,8 +74,12 @@ int main()
     cv::Mat distCoeffs;
     std::vector<float> perViewError;
     double rms;
-    
 
+    ///*** Fronto-Parallel thing
+    std::vector<cv::Point2f> imagePoints2;
+    std::vector<cv::Point2f> pointbuf2;
+    cv::Mat temp;    
+    
     /// Testing variables
     int frameCount = 0;
     int frameCountLess = 0;
@@ -92,8 +101,7 @@ int main()
         
         capture >> frame;                
         if (frame.empty())
-            break;
-        
+            break;        
 
         /// Getting frame features
         frWidth = capture.get(cv::CAP_PROP_FRAME_WIDTH );
@@ -129,7 +137,7 @@ int main()
 
             ///*** IDENTIFY RINGS ***///
             identifyRings(contours, hierarchy, pointbuf, patternSize, frame);
-            //std::cout<<"PointBufferSize: "<<pointbuf.size()<<std::endl;
+            //std::cout<<"PointBufferSize: "<<pointbuf.size()<<"  ";
             
             ///*** FIND RINGS GRID ***///
             if (pointbuf.size() == patternSize)
@@ -143,8 +151,8 @@ int main()
                 if (pointbuf.size() < patternSize)
                     frameCountLess++;
                 previousFound = false;
-
-            }            
+            }   
+            //std::cout<<frameCount<<"  -  "<<found <<std::endl;         
             break;
         default:
             found = false;
@@ -171,12 +179,14 @@ int main()
             //Add pointBuffer to imagePoint
             if(frameCountFound % nrSkip == 0){
                 imagePoints.push_back(pointbuf);
+                selectedFrames.push_back(frame.clone());
                 //std::cout<<"frame capturado: " <<imagePoints.size()<<std::endl; 
                 //std::cout << imagePoints.size() <<" ";
             }
             
             /// When it riches predefine nro of Sample, calibrate camera
-            if(imagePoints.size() == nrSamples){  
+            if(imagePoints.size() == nrSamples)
+            {  
                 //std::cout<<imagePoints              //Calibrate camera
                 std::vector<std::vector<cv::Point3f>> objectPoints(1);                
                 getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
@@ -186,26 +196,30 @@ int main()
                 for(int i = 0; i < imagePoints.size(); i++){
 
                     std::cout <<"xy: " <<imagePoints[i] << std::endl;  
+                }
+
+                std::cout << " objectPoints" <<std::endl;
+                for(int i = 0; i < objectPoints.size(); i++){
+
+                    std::cout <<"xy: " <<objectPoints[i] << std::endl;  
                 }*/
 
-                std::cout<<objectPoints.size() <<" - "<<imagePoints.size()<<" - "<<frWidth << " - " <<frHeight <<std::endl;
+                //std::cout<<objectPoints.size() <<" - "<<imagePoints.size()<<" - "<<frWidth << " - " <<frHeight <<std::endl;
                 rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
-    			std::cout <<std::endl;
-                std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
-                std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
-                std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
-                std::cout << "----------------------------" << std::endl;
                 
-                std::vector<float> reprojErrs;
                 bool ok = (checkRange(cameraMatrix) && checkRange(distCoeffs));
                 if(!ok)
                     std::cout<<"Camera was not calibrated" <<std::endl;
                 
-                double totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs, cameraMatrix, distCoeffs, reprojErrs);
-                std::cout<<"Average reprojection error: " << totalAvgErr <<std::endl;
+                std::cout <<std::endl;
+                std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
+                std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
+                std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
+                std::cout << "----------------------------" << std::endl;
 
-                imagePoints.clear();                
-            }   
+                undistort = true; 
+                imagePoints.clear();                 
+            }  
         }
         else
         {
@@ -214,10 +228,19 @@ int main()
             frameCountNotFound++;
         }
 
+        if(undistort){
+            ///*** Undistort image ***///
+            temp = frame.clone();
+            cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
+            cv::undistort(temp,frame,cameraMatrix,distCoeffs,OptimalMatrix);     
+            break;
+        }
+
         if (display == 1)
         {
             cv::namedWindow("Video Display", cv::WINDOW_NORMAL);
             imshow("Video Display", frame);
+            
             if (displayContinuosly == 1)
                 cv::waitKey(20);
             else
@@ -241,7 +264,51 @@ int main()
             }*/
         }
 
-        if (printFrameCount == 1)
+        contours.clear();
+        hierarchy.clear();
+        pointbuf.clear();
+    }
+
+    ///*** Fronto-Parallel thing
+    std::cout<<"------ Fronto-Parallel thing" <<std::endl;
+    for(int i=0; i<selectedFrames.size(); i++){
+        //---------------------------------         
+                    /// Undistort and Unproject
+                    /// find grid
+                    /// ProjectControlPoints
+                    /// Calibrate camera                    
+        ///*** Undistort image ***///
+        cv::Mat frame2 = selectedFrames[i]; 
+        temp = frame2.clone();
+        cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
+        cv::undistort(temp,frame2,cameraMatrix,distCoeffs,OptimalMatrix);                    
+                    
+        found = findRingsGrid(temp, patternSizes[pattern], pointbuf2, prevoiusPointbuf, previousFound);
+        cv::drawChessboardCorners(frame2, patternSizes[pattern], pointbuf2, found);
+
+        cv::undistortPoints(pointbuf2, imagePoints2, cameraMatrix, distCoeffs);
+
+        std::vector<std::vector<cv::Point3f>> objectPoints(1);                
+        getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
+        objectPoints.resize(imagePoints.size(),objectPoints[0]);
+
+        /*        
+        cv::Mat rvec, tvec;
+        Rodrigues(rvecs, rvec);
+        Rodrigues(tvecs, tvec, cv::noArray());
+        projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints2);
+                    
+        */
+        rms = calibrateCamera(objectPoints, imagePoints2, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
+        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl; 
+        
+        cv::namedWindow("Video Display 2", cv::WINDOW_NORMAL);
+        imshow("Video Display 2", frame2);
+        if (cv::waitKey() == 27)
+            cv::waitKey(100);
+    }
+
+    if (printFrameCount == 1)
         {            
             std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
             std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
@@ -250,46 +317,9 @@ int main()
             /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
             std::cout << "More than pattern size " << frameCountMore << std::endl;*/
         }
-
-        contours.clear();
-        hierarchy.clear();
-        pointbuf.clear();
-        
-    }
-
-    /*if (printFrameCount == 1)
-    {
-        std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
-        std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
-        std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
-        std::cout << "-----------------------------------" << std::endl;
-        std::cout << "Less than pattern size " << frameCountLess << std::endl;
-        std::cout << "More than pattern size " << frameCountMore << std::endl;
-    }*/
 }
 
-static double computeReprojectionErrors( const std::vector<std::vector<cv::Point3f> >& objectPoints,
-                                         const std::vector<std::vector<cv::Point2f> >& imagePoints,
-                                         const std::vector<cv::Mat>& rvecs, const std::vector<cv::Mat>& tvecs,
-                                         const cv::Mat& cameraMatrix , const cv::Mat& distCoeffs,
-                                         std::vector<float>& perViewErrors)
-{
-    std::vector<cv::Point2f> imagePoints2;
-    int i, totalPoints = 0;
-    double totalErr = 0, err;
-    perViewErrors.resize(objectPoints.size());
-
-    for( i = 0; i < (int)objectPoints.size(); ++i )
-    {
-        projectPoints( cv::Mat(objectPoints[i]), rvecs[i], tvecs[i], cameraMatrix,
-                       distCoeffs, imagePoints2);
-        err = cv::norm(cv::Mat(imagePoints[i]) - cv::Mat(imagePoints2));
-
-        int n = (int)objectPoints[i].size();
-        perViewErrors[i] = (float) std::sqrt(err*err/n);
-        totalErr        += err*err;
-        totalPoints     += n;
-    }
-
-    return std::sqrt(totalErr/totalPoints);
-}
+// for(int i = 0; i < 10; i++){
+                    
+              //  }   
+               
