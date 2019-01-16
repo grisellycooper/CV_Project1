@@ -14,11 +14,11 @@
 //#define video_path "../../../videos/PadronCirculos_02.avi" // 4 x 11 circulos
 
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
-//#define video_path "../../../videos/padron2.avi" // 20 Anillos
+#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
 
 /// Test cam1
-#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
+//#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
 //#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
 //#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
 
@@ -37,11 +37,10 @@ enum Pattern
 cv::Size patternSizes[] = {cv::Size(8, 6), cv::Size(5, 5), cv::Size(4, 11), cv::Size(5, 4)}; // Accoring to pattern
 float ctrlPointDistances[] = {0.026, 0.0, 0.0375, 0.0455}; // Meters real distances
 
-static double computeReprojectionErrors( const std::vector<std::vector<cv::Point3f> >& objectPoints,
-                                         const std::vector<std::vector<cv::Point2f> >& imagePoints,
-                                         const std::vector<cv::Mat>& rvecs, const std::vector<cv::Mat>& tvecs,
-                                         const cv::Mat& cameraMatrix , const cv::Mat& distCoeffs,
-                                         std::vector<float>& perViewErrors);
+//** helping functions **//
+std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size patternSize);
+std::vector<cv::Point2f> extractCorners(std::vector<cv::Point2f>& v, cv::Size size);
+
 int main()
 {
     Pattern pattern = RINGS_GRID;
@@ -75,11 +74,6 @@ int main()
     std::vector<float> perViewError;
     double rms;
 
-    ///*** Fronto-Parallel thing
-    std::vector<cv::Point2f> imagePoints2;
-    std::vector<cv::Point2f> pointbuf2;
-    cv::Mat temp;    
-    
     /// Testing variables
     int frameCount = 0;
     int frameCountLess = 0;
@@ -218,7 +212,7 @@ int main()
                 std::cout << "----------------------------" << std::endl;
 
                 undistort = true; 
-                imagePoints.clear();                 
+                //imagePoints.clear();                 
             }  
         }
         else
@@ -230,9 +224,9 @@ int main()
 
         if(undistort){
             ///*** Undistort image ***///
-            temp = frame.clone();
+            cv::Mat temp1 = frame.clone();
             cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
-            cv::undistort(temp,frame,cameraMatrix,distCoeffs,OptimalMatrix);     
+            cv::undistort(temp1,frame,cameraMatrix,distCoeffs,OptimalMatrix);     
             break;
         }
 
@@ -270,43 +264,115 @@ int main()
     }
 
     ///*** Fronto-Parallel thing
-    std::cout<<"------ Fronto-Parallel thing" <<std::endl;
-    for(int i=0; i<selectedFrames.size(); i++){
-        //---------------------------------         
-                    /// Undistort and Unproject
-                    /// find grid
-                    /// ProjectControlPoints
-                    /// Calibrate camera                    
-        ///*** Undistort image ***///
-        cv::Mat frame2 = selectedFrames[i]; 
-        temp = frame2.clone();
-        cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
-        cv::undistort(temp,frame2,cameraMatrix,distCoeffs,OptimalMatrix);                    
-                    
-        found = findRingsGrid(temp, patternSizes[pattern], pointbuf2, prevoiusPointbuf, previousFound);
-        cv::drawChessboardCorners(frame2, patternSizes[pattern], pointbuf2, found);
-
-        cv::undistortPoints(pointbuf2, imagePoints2, cameraMatrix, distCoeffs);
-
+    for(int iter = 0; iter < 5; iter++){
+        std::vector<std::vector<cv::Point2f>> imagePoints2;    
+        std::vector<cv::Point2f> pointbuf2;
+        cv::Mat temp;    
+        bool found2 = false;
+        
         std::vector<std::vector<cv::Point3f>> objectPoints(1);                
         getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
         objectPoints.resize(imagePoints.size(),objectPoints[0]);
 
-        /*        
-        cv::Mat rvec, tvec;
-        Rodrigues(rvecs, rvec);
-        Rodrigues(tvecs, tvec, cv::noArray());
-        projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints2);
-                    
-        */
-        rms = calibrateCamera(objectPoints, imagePoints2, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
-        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl; 
+        std::cout<<"------ Fronto-Parallel thing" <<std::endl;
         
-        cv::namedWindow("Video Display 2", cv::WINDOW_NORMAL);
-        imshow("Video Display 2", frame2);
-        if (cv::waitKey() == 27)
-            cv::waitKey(100);
+        rvecs.clear();
+        tvecs.clear();
+
+        rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
+        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;     
+
+        for(int i=0; i<selectedFrames.size(); i++){
+            //---------------------------------         
+            /// Undistort and Unproject
+            /// find grid
+            /// ProjectControlPoints
+            /// Calibrate camera                    
+            
+            ///*** Undistort image ***///
+            cv::Mat frame2 = selectedFrames[i]; 
+            temp = frame2.clone();
+            cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
+            cv::undistort(temp,frame2,cameraMatrix,distCoeffs,OptimalMatrix);                    
+            cv::undistortPoints(imagePoints[i], pointbuf2, cameraMatrix, distCoeffs);
+
+            //found = findRingsGrid(frame, patternSizes[pattern], imagePoints2, prevoiusPointbuf, previousFound);
+            //cv::drawChessboardCorners(frame2, patternSizes[pattern], imagePoints2, found);
+            
+            //imagePoints2.push_back(pointbuf2);
+            
+
+            //std::cout<<"buf: " <<pointbuf2.size();
+            std::vector<cv::Point2f> fronto_corners = getFrontoParallelCorners(cv::Size(frWidth, frHeight),patternSizes[pattern]);
+            std::vector<cv::Point2f> corners1 = extractCorners(pointbuf2,patternSizes[pattern]);
+            //std::cout<<"   - cor: " <<corners1.size();
+            cv::Mat a = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            for (int i = 0; i < fronto_corners.size(); i++)
+            {
+                circle(a, fronto_corners[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+                //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+            }
+
+            cv::namedWindow("1", cv::WINDOW_NORMAL); 
+            imshow("1", a);
+            
+            cv::Mat b = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            for (int i = 0; i < corners1.size(); i++)
+            {
+                std::cout<<"   - x: " <<corners1[i].x<<std::endl;
+                circle(b, corners1[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+                //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+            }
+
+            cv::namedWindow("2", cv::WINDOW_NORMAL); 
+            imshow("2", b);
+            
+
+            /*cv::Mat M = cv::findHomography(corners1,fronto_corners);
+	        cv::Mat imgWarp;
+	        cv::warpPerspective(frame,imgWarp,M,cv::Size(320,240));
+	        */
+            /*pointbuf2.clear();			
+			found2 = findRingsGrid(imgWarp, patternSizes[pattern], pointbuf2, pointbuf2, false);
+
+			if(!found2){
+				std::cout << "no se pudo enconrtar el patron en la proyeccion FrontoParallel\n";
+			}
+
+			//Transformacion Fronto Parallel Inversa
+			cv::Mat imgWarp_inv;
+	        cv::warpPerspective(imgWarp,imgWarp_inv,H.inv(),frame.size());
+
+	        std::vector<cv::Point2f> points_buffer2;
+
+	        cv::perspectiveTransform( pointbuf2, points_buffer2, H.inv() );
+
+	        std::vector<cv::Point2f> corrected_points;
+
+	        // Distorsión Inversa
+	        cv::undistortPoints(points_buffer2,corrected_points,OptimalMatrix,-distCoeffs,cv::noArray(),cameraMatrix);
+	       	
+	       	cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, true);
+	       	cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], imagePoints[i], true);
+	       	
+	       	imagePoints2.push_back(corrected_points);
+*/
+            cv::namedWindow("Video Display 2", cv::WINDOW_NORMAL);
+            imshow("Video Display 2", frame2);
+
+            //cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
+            //imshow("ImgWarp Inv", imgWarp);
+            if (cv::waitKey() == 27)
+                cv::waitKey(100);
+
+  /*          for(int j=0; j<patternSize; j++){
+                imagePoints[i][j].x = (imagePoints[i][j].x +  imagePoints2[i][j].x) / 2.0;
+				imagePoints[i][j].y = (imagePoints[i][j].y +  imagePoints2[i][j].y) / 2.0;
+            }*/
+        }
+
     }
+    
 
     if (printFrameCount == 1)
         {            
@@ -319,7 +385,36 @@ int main()
         }
 }
 
-// for(int i = 0; i < 10; i++){
-                    
-              //  }   
-               
+
+std::vector<cv::Point2f> extractCorners(std::vector<cv::Point2f>& v, cv::Size size){
+    std::vector<cv::Point2f> corners;
+
+    // tenemos que separar las 4 esquinas del patron
+    corners.push_back(v[0]);
+
+    corners.push_back(v[size.width - 1]);
+
+    corners.push_back(v[v.size() - size.width]);
+
+    corners.push_back(v[v.size()-1]);
+
+    return corners;
+}
+
+std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size patternSize){
+    float tx = 40.0f, ty = 30.0f;
+    float dim = 45.0f;
+    
+    std::vector<cv::Point2f> corners;
+
+    corners.push_back(cv::Point2f(tx,ty + patternSize.height * dim));
+
+    corners.push_back(cv::Point2f(tx + patternSize.width * dim, ty + patternSize.height * dim));
+
+    corners.push_back(cv::Point2f(tx,ty));
+
+    corners.push_back(cv::Point2f(tx + patternSize.width * dim,ty));
+
+    return corners;
+
+}
