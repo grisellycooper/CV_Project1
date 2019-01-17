@@ -14,11 +14,11 @@
 //#define video_path "../../../videos/PadronCirculos_02.avi" // 4 x 11 circulos
 
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
-#define video_path "../../../videos/padron2.avi" // 20 Anillos
+//#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
 
 /// Test cam1
-//#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
+#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
 //#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
 //#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
 
@@ -299,14 +299,14 @@ int main()
             //found = findRingsGrid(frame, patternSizes[pattern], imagePoints2, prevoiusPointbuf, previousFound);
             //cv::drawChessboardCorners(frame2, patternSizes[pattern], imagePoints2, found);
             
-            //imagePoints2.push_back(pointbuf2);
+            imagePoints2.push_back(pointbuf2);
             
 
             //std::cout<<"buf: " <<pointbuf2.size();
-            std::vector<cv::Point2f> fronto_corners = getFrontoParallelCorners(cv::Size(frWidth, frHeight),patternSizes[pattern]);
-            std::vector<cv::Point2f> corners1 = extractCorners(pointbuf2,patternSizes[pattern]);
+            //std::vector<cv::Point2f> fronto_corners = getFrontoParallelCorners(cv::Size(frWidth, frHeight),patternSizes[pattern]);
+            //std::vector<cv::Point2f> corners1 = extractCorners(pointbuf2,patternSizes[pattern]);
             //std::cout<<"   - cor: " <<corners1.size();
-            cv::Mat a = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            /*cv::Mat a = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
             for (int i = 0; i < fronto_corners.size(); i++)
             {
                 circle(a, fronto_corners[i], 1, cv::Scalar(0, 0, 255), 4, 8);
@@ -326,7 +326,7 @@ int main()
 
             cv::namedWindow("2", cv::WINDOW_NORMAL); 
             imshow("2", b);
-            
+            */
 
             /*cv::Mat M = cv::findHomography(corners1,fronto_corners);
 	        cv::Mat imgWarp;
@@ -369,8 +369,11 @@ int main()
                 imagePoints[i][j].x = (imagePoints[i][j].x +  imagePoints2[i][j].x) / 2.0;
 				imagePoints[i][j].y = (imagePoints[i][j].y +  imagePoints2[i][j].y) / 2.0;
             }*/
-        }
 
+        }
+        
+        imagePoints.clear();
+        imagePoints = imagePoints2;
     }
     
 
@@ -416,5 +419,4 @@ std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size pat
     corners.push_back(cv::Point2f(tx + patternSize.width * dim,ty));
 
     return corners;
-
 }
