@@ -14,11 +14,11 @@
 //#define video_path "../../../videos/PadronCirculos_02.avi" // 4 x 11 circulos
 
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
-#define video_path "../../../videos/padron2.avi" // 20 Anillos
+//#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
 
 /// Test cam1
-//#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
+#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
 //#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
 //#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
 
@@ -451,5 +451,4 @@ std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size pat
     corners.push_back(cv::Point2f(tx + patternSize.width * dim,ty));
 
     return corners;
-
 }
