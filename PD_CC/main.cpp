@@ -166,8 +166,6 @@ int main()
             
             previousFound = true;
             prevoiusPointbuf = pointbuf;
-            cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
-            frameCountFound++;
             //std::cout<<"frame: "<<frameCount <<" - found!"<<std::endl;
 
             //Add pointBuffer to imagePoint
@@ -177,6 +175,9 @@ int main()
                 //std::cout<<"frame capturado: " <<imagePoints.size()<<std::endl; 
                 //std::cout << imagePoints.size() <<" ";
             }
+            
+            cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
+            frameCountFound++;
             
             /// When it riches predefine nro of Sample, calibrate camera
             if(imagePoints.size() == nrSamples)
@@ -264,6 +265,8 @@ int main()
     }
 
     ///*** Fronto-Parallel thing
+    bool ba = true;
+        
     for(int iter = 0; iter < 5; iter++){
         std::vector<std::vector<cv::Point2f>> imagePoints2;    
         std::vector<cv::Point2f> pointbuf2;
@@ -276,12 +279,20 @@ int main()
 
         std::cout<<"------ Fronto-Parallel thing" <<std::endl;
         
-        rvecs.clear();
-        tvecs.clear();
-
-        rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
-        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;     
-
+        std::vector<cv::Mat> rvecs2;
+        std::vector<cv::Mat> tvecs2;
+        cv::Mat cameraMatrix2;
+        cv::Mat distCoeffs2;
+    
+        rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix2, distCoeffs2, rvecs2, tvecs2);
+        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;   
+        std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix2 << std::endl;
+        std::cout << "Distortion coefficients" << std::endl << distCoeffs2 << std::endl;
+        std::cout << "----------------------------" << std::endl;
+  
+        
+        std::vector<cv::Point2f> fronto_corners = getFrontoParallelCorners(cv::Size(frWidth, frHeight),patternSizes[pattern]);
+            
         for(int i=0; i<selectedFrames.size(); i++){
             //---------------------------------         
             /// Undistort and Unproject
@@ -292,85 +303,109 @@ int main()
             ///*** Undistort image ***///
             cv::Mat frame2 = selectedFrames[i]; 
             temp = frame2.clone();
-            cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
-            cv::undistort(temp,frame2,cameraMatrix,distCoeffs,OptimalMatrix);                    
-            cv::undistortPoints(imagePoints[i], pointbuf2, cameraMatrix, distCoeffs);
+            cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix2, distCoeffs2, cv::Size(frWidth,frHeight), 1.0);
+            cv::undistort(temp,frame2,cameraMatrix2,distCoeffs2,OptimalMatrix);                    
+            cv::undistortPoints(imagePoints[i], pointbuf2, cameraMatrix2, distCoeffs2, cv::noArray(), OptimalMatrix);
 
-            //found = findRingsGrid(frame, patternSizes[pattern], imagePoints2, prevoiusPointbuf, previousFound);
-            //cv::drawChessboardCorners(frame2, patternSizes[pattern], imagePoints2, found);
             
-            //imagePoints2.push_back(pointbuf2);
-            
-
-            //std::cout<<"buf: " <<pointbuf2.size();
-            std::vector<cv::Point2f> fronto_corners = getFrontoParallelCorners(cv::Size(frWidth, frHeight),patternSizes[pattern]);
+            std::cout<<"buf: " <<pointbuf2.size() <<std::endl;
             std::vector<cv::Point2f> corners1 = extractCorners(pointbuf2,patternSizes[pattern]);
             //std::cout<<"   - cor: " <<corners1.size();
-            cv::Mat a = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            /*cv::Mat a = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
             for (int i = 0; i < fronto_corners.size(); i++)
             {
+                std::cout<<"x,y: " <<fronto_corners[i].x <<", "<< fronto_corners[i].y <<std::endl;
                 circle(a, fronto_corners[i], 1, cv::Scalar(0, 0, 255), 4, 8);
                 //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
             }
 
             cv::namedWindow("1", cv::WINDOW_NORMAL); 
             imshow("1", a);
-            
-            cv::Mat b = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            */
+            /*cv::Mat b = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
             for (int i = 0; i < corners1.size(); i++)
             {
-                std::cout<<"   - x: " <<corners1[i].x<<std::endl;
+                std::cout<<"x,y: " <<corners1[i].x <<", "<< corners1[i].y <<std::endl;
                 circle(b, corners1[i], 1, cv::Scalar(0, 0, 255), 4, 8);
                 //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
             }
 
             cv::namedWindow("2", cv::WINDOW_NORMAL); 
             imshow("2", b);
-            
-
-            /*cv::Mat M = cv::findHomography(corners1,fronto_corners);
+            */
+            cv::Mat H = cv::findHomography(corners1,fronto_corners);
 	        cv::Mat imgWarp;
-	        cv::warpPerspective(frame,imgWarp,M,cv::Size(320,240));
-	        */
-            /*pointbuf2.clear();			
-			found2 = findRingsGrid(imgWarp, patternSizes[pattern], pointbuf2, pointbuf2, false);
+	        cv::warpPerspective(frame2,imgWarp,H,frame2.size());
+	        
+            cv::namedWindow("ImgWarp", cv::WINDOW_NORMAL); 
+            imshow("ImgWarp", imgWarp);
+            
+            pointbuf2.clear();		
+            contours.clear();
+            hierarchy.clear();
+            found2 = false;
+            ///**** PREPROCESSING IMAGE ****///
+            preprocessImage(imgWarp, view, contours, hierarchy);
+            //std::cout<<"Contours: "<<contours.size()<<std::endl;
+            //std::cout<<"Hierarchy: "<<hierarchy.size()<<std::endl;
 
-			if(!found2){
-				std::cout << "no se pudo enconrtar el patron en la proyeccion FrontoParallel\n";
-			}
+            ///*** IDENTIFY RINGS ***///
+            identifyRings2(contours, hierarchy, pointbuf2, patternSize, imgWarp);
+            std::cout<<"PointBufferSize: "<<pointbuf2.size()<<"  ";
+            
+            if(ba)
+            {
+            
+                ///*** FIND RINGS GRID ***///
+                if (pointbuf2.size() == patternSize)
+                {   
+                    found2 = findRingsGrid(imgWarp, patternSizes[pattern], pointbuf2, pointbuf2, false);                   
+                }
 
-			//Transformacion Fronto Parallel Inversa
-			cv::Mat imgWarp_inv;
-	        cv::warpPerspective(imgWarp,imgWarp_inv,H.inv(),frame.size());
+                if(!found2){
+                    std::cout << "Not found in the parallel frame!\n";
+                }
+                else{
+                    //std::cout << "Albricias!" <<std::endl;
+                }
 
-	        std::vector<cv::Point2f> points_buffer2;
+                //Transformacion Fronto Parallel Inversa
+                cv::Mat imgWarp_inv;
+                cv::warpPerspective(imgWarp,imgWarp_inv,H.inv(),imgWarp.size());
 
-	        cv::perspectiveTransform( pointbuf2, points_buffer2, H.inv() );
+                std::vector<cv::Point2f> points_buffer2;
 
-	        std::vector<cv::Point2f> corrected_points;
+                cv::perspectiveTransform( pointbuf2, points_buffer2, H.inv() );
 
-	        // Distorsión Inversa
-	        cv::undistortPoints(points_buffer2,corrected_points,OptimalMatrix,-distCoeffs,cv::noArray(),cameraMatrix);
-	       	
-	       	cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, true);
-	       	cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], imagePoints[i], true);
-	       	
-	       	imagePoints2.push_back(corrected_points);
-*/
+                std::vector<cv::Point2f> corrected_points;
+
+                // Distorsión Inversa
+                cv::undistortPoints(points_buffer2,corrected_points,OptimalMatrix,-distCoeffs2,cv::noArray(),cv::noArray());
+                
+
+                cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, true);
+                cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], imagePoints[i], true);
+                
+                imagePoints2.push_back(corrected_points);
+
+                cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
+                imshow("ImgWarp Inv", imgWarp_inv);
+
+                for(int j=0; j<patternSize; j++){
+                   imagePoints[i][j].x = (imagePoints[i][j].x +  imagePoints2[i][j].x) / 2.0;
+				    imagePoints[i][j].y = (imagePoints[i][j].y +  imagePoints2[i][j].y) / 2.0;
+                }  
+            }
+
             cv::namedWindow("Video Display 2", cv::WINDOW_NORMAL);
             imshow("Video Display 2", frame2);
 
-            //cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
-            //imshow("ImgWarp Inv", imgWarp);
             if (cv::waitKey() == 27)
                 cv::waitKey(100);
 
-  /*          for(int j=0; j<patternSize; j++){
-                imagePoints[i][j].x = (imagePoints[i][j].x +  imagePoints2[i][j].x) / 2.0;
-				imagePoints[i][j].y = (imagePoints[i][j].y +  imagePoints2[i][j].y) / 2.0;
-            }*/
+            
         }
-
+        ba = false;            
     }
     
 
@@ -402,8 +437,8 @@ std::vector<cv::Point2f> extractCorners(std::vector<cv::Point2f>& v, cv::Size si
 }
 
 std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size patternSize){
-    float tx = 40.0f, ty = 30.0f;
-    float dim = 45.0f;
+    float tx = 80.0f, ty = 60.0f;
+    float dim = 90.0f;
     
     std::vector<cv::Point2f> corners;
 
