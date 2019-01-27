@@ -17,9 +17,12 @@ float StandarDesviation(const std::vector<float> & values );
 std::vector< std::vector<int> > GenerateCombinations(int n, int r);
 void printCombination(std::vector< std::vector<int> >& v, int arr[], int n, int r);
 void combinationUtil(std::vector< std::vector<int> >& v, int arr[], std::vector<int> &data, int start, int end, int index, int r);
-
+void thresholdIntegral(cv::Mat &inputMat, cv::Mat &outputMat);
 
 ///*** Parallel thing
 //** Find the rings that belong to pattern **// 
+void identifyRings2(std::vector<std::vector<cv::Point>>& contours, std::vector<cv::Vec4i>& hierarchy, 
+                    std::vector<cv::Point2f>& pointbuf, int patternSize, cv::Mat src);
+
 void identifyRings2(std::vector<std::vector<cv::Point>>& contours, std::vector<cv::Vec4i>& hierarchy, 
                     std::vector<cv::Point2f>& pointbuf, int patternSize, cv::Mat src);
