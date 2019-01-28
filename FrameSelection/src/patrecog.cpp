@@ -253,6 +253,157 @@ findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &point
     return false;
 }
 
+void preprocessImage2(cv::Mat src, cv::Mat output,
+                     std::vector<std::vector<cv::Point>> &contours,
+                     std::vector<cv::Vec4i> &hierarchy)
+{
+    cv::Mat gray, bw, cont;
+
+    // Convert to grayscale and apply Gaussian blur
+    // Reduce information and noise
+    cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+    cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0, 0);
+    if (displayCompletePreprocess == 1)
+    {
+        cv::namedWindow("Grayscale Gaussian Blur", cv::WINDOW_NORMAL);
+        imshow("Grayscale Gaussian Blur", gray);
+    }
+
+    // Convert image to binary
+    bw = cv::Mat::zeros(gray.size(), CV_8UC1);
+    //cv::threshold(gray, bw, 100, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+    //cv::adaptiveThreshold(gray, bw, 250, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 25, -1);
+    //cv::adaptiveThreshold(gray, bw, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 39, 7);
+    thresholdIntegral(gray, bw);
+    if (displayCompletePreprocess == 1)
+    {
+        cv::namedWindow("Binary", cv::WINDOW_NORMAL);
+        imshow("Binary", bw);
+    }
+
+    cont = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
+    // Find all the contours in the thresholded image
+    cv::findContours(bw, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE, cv::Point(0, 0));
+    if (displayCompletePreprocess == 1)
+    {
+        for (int i = 0; i < contours.size(); i++)
+        {
+            cv::drawContours(cont, contours, static_cast<int>(i), cv::Scalar(0, 0, 255), 2);
+        }
+        cv::namedWindow("Contour", cv::WINDOW_NORMAL);
+        imshow("Contour", cont);
+    }
+    return;
+}
+
+void identifyRings2(std::vector<std::vector<cv::Point>> &contours,
+                   std::vector<cv::Vec4i> &hierarchy,
+                   std::vector<cv::Point2f> &pointbuf,
+                   int patternSize,
+                   cv::Mat src)
+{
+    std::vector<cv::RotatedRect> minEllipse;
+    std::vector<cv::RotatedRect> minEllipseSelected;
+    std::vector<cv::Point2f> tmpCenters;
+
+    cv::Mat test1 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
+
+    //float w, h, c_x, c_y, child_c_x, child_c_y, distance;
+    //float sumX, sumY,cpX, cpY;
+    float distance;
+    float sumX, sumY;
+    int child_index, radialZone;
+
+    sumX = sumY = 0.0;
+
+    //Find the minimum bounding ellipse
+    minEllipse.resize(contours.size());
+    minEllipseSelected.resize(contours.size());
+    //img = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+    for (int i = 0; i < contours.size(); i++)
+    {
+        if (contours[i].size() >= 5)
+        {
+            minEllipse[i] = fitEllipse(contours[i]);
+            //ellipse( src, minEllipse[i], Scalar(0,0,255), 1, 8 );
+        }
+    }
+
+    for (int i = 0; i < contours.size(); i++)
+    {
+        child_index = hierarchy[i][2];
+        //std::cout<<"*  " <<std::endl;
+        if (child_index != -1 && hierarchy[child_index][2] == -1) //Check out for child but not grandchild
+        {
+            //Check distances between parent's center and child's center
+            //Should be less than threshold
+            distance = cv::norm(minEllipse[i].center - minEllipse[child_index].center);
+            //std::cout<<"dist: " <<distance <<std::endl;
+            if (distance < thresholdDistCircles)
+            {
+                minEllipseSelected.push_back(minEllipse[i]);
+                minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
+                if (displayCompletePreprocess == 1)
+                {
+                    ellipse(test1, minEllipse[i], cv::Scalar(0, 0, 255), 2, 8);
+                    ellipse(test1, minEllipse[hierarchy[i][2]], cv::Scalar(0, 0, 255), 1, 8);
+                }
+                tmpCenters.push_back(cv::Point2f((minEllipse[i].center.x + minEllipse[child_index].center.x) / 2, (minEllipse[i].center.y + minEllipse[child_index].center.y) / 2));
+            }
+        }
+    }
+
+    for (int i = 0; i < tmpCenters.size(); i++)
+    {
+        sumX += tmpCenters[i].x;
+        sumY += tmpCenters[i].y;
+    }
+
+    /// Finding an average Central Point
+    /*cv::Point2f avg(sumX / tmpCenters.size(), sumY / tmpCenters.size());
+
+    for (radialZone = 1; radialZone < 200; radialZone++)
+    {
+        int count = 0;
+        for (int i = 0; i < tmpCenters.size(); i++)
+        {
+            if (cv::norm(avg - tmpCenters[i]) < radialZone)
+                count++;
+        }
+        if (count >= patternSize)
+        {
+            break;
+        }
+    }
+
+    /// Add circles in the radial zone
+    for (int i = 0; i < tmpCenters.size(); i++)
+    {
+        if (cv::norm(avg - tmpCenters[i]) < radialZone + 20)
+            pointbuf.push_back(tmpCenters[i]);
+    }
+*/
+    for (int i = 0; i < tmpCenters.size(); i++)
+    {
+        pointbuf.push_back(tmpCenters[i]);
+    }
+
+    if (displayCompleteFilter1 == 1)
+    {
+        
+        //circle(test1, avg, 1, cv::Scalar(255, 0, 0), 4, 8);            
+        for (int i = 0; i < tmpCenters.size(); i++)
+        {
+            //pointbuf.push_back(tmpCenters[i]);
+            circle(test1, tmpCenters[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+            //cv::putText(test1, std::to_string(i), tmpCenters[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+        }
+
+        cv::namedWindow("Identify Rings", cv::WINDOW_NORMAL);
+        imshow("Identify Rings", test1);
+    }
+}
+
 bool 
 getPointBufferInOrder(std::vector<cv::Point2f> &pointbuf, std::vector<cv::Point2f> &tmpPointBuf, int patternHeigh, int patternWidth)
 {
