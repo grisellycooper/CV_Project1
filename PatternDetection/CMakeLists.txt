@@ -27,8 +27,7 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 include_directories(include)
 
 # Set source directory
-# set(SOURCES src/src1.cpp src/src2.cpp main.cpp) #For more source files
-set(SOURCES main.cpp)
+set(SOURCES src/camcalib.cpp src/patrecog.cpp main.cpp)
 
 # Declare the executable target built from your sources
 add_executable(output ${SOURCES})

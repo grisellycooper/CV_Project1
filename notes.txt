@@ -1,0 +1,7 @@
+- adjust pattern detection for new videos (try to make ir more general)
+- implement the smart selector
+    - use cuadrants
+- fronto parallel
+    - get pattern with same dimensions
+    - Use find circles
+    - adjust the pattern detection

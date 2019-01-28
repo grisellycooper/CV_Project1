@@ -1,8 +1,9 @@
 #include "../include/patrecog.h"
 
-#define threshold 1.25f
-#define displayCompletePreprocess 1
-#define displayCompleteFilter1 1
+#define thresholdDistCircles 1.0f
+#define thresholdDistColinearity 5.0f  /// To prevent high distortion  
+#define displayCompletePreprocess 0
+#define displayCompleteFilter1 0
 #define displayCompleteFilter2 0
 
 int found;
@@ -59,14 +60,15 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     std::vector<cv::RotatedRect> minEllipse;
     std::vector<cv::RotatedRect> minEllipseSelected;
     std::vector<cv::Point2f> tmpCenters;
-
+    
     cv::Mat test1 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
 
     //float w, h, c_x, c_y, child_c_x, child_c_y, distance;
     //float sumX, sumY,cpX, cpY;
     float distance;
     float sumX, sumY;
-    int child_index, radialZone;
+    int child_index, radialZone, tmpMinDistTwoCenters;
+    float minDistTwoCenters = 1000.0f;
 
     sumX = sumY = 0.0;
 
@@ -92,20 +94,30 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
             //Check distances between parent's center and child's center
             //Should be less than threshold
             distance = cv::norm(minEllipse[i].center - minEllipse[child_index].center);
-            //std::cout<<"dist: " <<distance <<std::endl;
-            if (distance < threshold)
+            /*if(distance < 5.0)
+                std::cout<<"dist Parent-Child: " <<distance <<std::endl;*/
+            if (distance < thresholdDistCircles)
             {
                 minEllipseSelected.push_back(minEllipse[i]);
                 minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
-                if (displayCompletePreprocess == 1)
+                if (displayCompleteFilter1 == 1)
                 {
                     ellipse(test1, minEllipse[i], cv::Scalar(0, 0, 255), 2, 8);
                     ellipse(test1, minEllipse[hierarchy[i][2]], cv::Scalar(0, 0, 255), 1, 8);
                 }
                 tmpCenters.push_back(cv::Point2f((minEllipse[i].center.x + minEllipse[child_index].center.x) / 2, (minEllipse[i].center.y + minEllipse[child_index].center.y) / 2));
+
+                if(tmpCenters.size() > 1){
+                    tmpMinDistTwoCenters = cv::norm(tmpCenters[tmpCenters.size()-1] - tmpCenters[tmpCenters.size()-2]);
+                    if(tmpMinDistTwoCenters < minDistTwoCenters)
+                        minDistTwoCenters = tmpMinDistTwoCenters;
+                }
             }
         }
     }
+
+    /*std::cout<<"tmpCenterSize: " <<tmpCenters.size() <<std::endl;
+    std::cout<<"minDistTwoCenters: " <<minDistTwoCenters <<std::endl;*/
 
     for (int i = 0; i < tmpCenters.size(); i++)
     {
@@ -133,13 +145,12 @@ void identifyRings(std::vector<std::vector<cv::Point>> &contours,
     /// Add circles in the radial zone
     for (int i = 0; i < tmpCenters.size(); i++)
     {
-        if (cv::norm(avg - tmpCenters[i]) < radialZone + 20)
+        if (cv::norm(avg - tmpCenters[i]) < radialZone + ceil(minDistTwoCenters))
             pointbuf.push_back(tmpCenters[i]);
-    }
+    } 
 
     if (displayCompleteFilter1 == 1)
-    {
-        
+    {        
         circle(test1, avg, 1, cv::Scalar(255, 0, 0), 4, 8);            
         for (int i = 0; i < pointbuf.size(); i++)
         {
@@ -238,7 +249,7 @@ void identifyRings2(std::vector<std::vector<cv::Point>> &contours,
             //Should be less than threshold
             distance = cv::norm(minEllipse[i].center - minEllipse[child_index].center);
             //std::cout<<"dist: " <<distance <<std::endl;
-            if (distance < threshold)
+            if (distance < thresholdDistCircles)
             {
                 minEllipseSelected.push_back(minEllipse[i]);
                 minEllipseSelected.push_back(minEllipse[hierarchy[i][2]]);
@@ -312,9 +323,10 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
     cv::Mat test2 = cv::Mat::zeros(src.rows, src.cols, CV_8UC3);
 
     tmpPointBuf = pointbuf;  
-    prevoiusFound = false;  
+    //prevoiusFound = false;  
     if (prevoiusFound)
     {
+        //std::cout<<" -- 1: " ;
         float currDist, minDist, stdv;
         int minIndex, c = 0;
         std::vector<float> distances;
@@ -352,7 +364,10 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
         /// Points that verify min displacment should be the same size as the patternSize
         /*if (c == iPatternSize)
         {*/
-        if(stdv < 2.0){
+        if(stdv < 1.5)
+        {
+            std::cout<<" -- 1: " <<std::endl;            
+            //std::cout<<" found! "<<std::endl;
             //pointbuf[k] = tmpPointBuf[minIndex];
             if (displayCompleteFilter2 == 1)
             {
@@ -367,13 +382,43 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
             }
             return true;
         }
+        else{
+            std::cout<<" -- 2: " <<std::endl;
+            orderFound = verifyOrder(tmpPointBuf, patternSize.height, patternSize.width);
+            
+            if (orderFound)
+            {
+                pointbuf.clear();
+                for (int i = 0; i < iPatternSize; i++)
+                {
+                    pointbuf.push_back(tmpPointBuf[i]);
+                }
+
+                if (displayCompleteFilter2 == 1)
+                {
+                    for (int i = 0; i < iPatternSize; i++)
+                    {
+                        circle(test2, pointbuf[i], 1, cv::Scalar(0, 0, 255), 4, 8);
+                        cv::putText(test2, std::to_string(i), pointbuf[i], cv::FONT_HERSHEY_DUPLEX, 1.0, cv::Scalar(250, 0, 0), 2);
+                    }
+
+                    cv::namedWindow("Find Grid", cv::WINDOW_NORMAL);
+                    imshow("Find Grid", test2);
+                }
+
+                return true;
+            }    
+        }
     }
     else
     {
+        std::cout<<" -- 0: " <<std::endl;            
+        //std::cout<<" -- 2: " ;
         orderFound = verifyOrder(tmpPointBuf, patternSize.height, patternSize.width);
+        
         if (orderFound)
         {
-            
+            //std::cout<<" found! " <<std::endl;
             pointbuf.clear();
             for (int i = 0; i < iPatternSize; i++)
             {
@@ -385,7 +430,7 @@ bool findRingsGrid(cv::Mat src, cv::Size patternSize, std::vector<cv::Point2f> &
                 for (int i = 0; i < iPatternSize; i++)
                 {
                     circle(test2, pointbuf[i], 1, cv::Scalar(0, 0, 255), 4, 8);
-                    cv::putText(test2, std::to_string(i), pointbuf[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+                    cv::putText(test2, std::to_string(i), pointbuf[i], cv::FONT_HERSHEY_DUPLEX, 1.0, cv::Scalar(250, 0, 0), 2);
                 }
 
                 cv::namedWindow("Find Grid", cv::WINDOW_NORMAL);
@@ -432,11 +477,10 @@ bool verifyOrder(std::vector<cv::Point2f> &tmpPB, int patternHeigh, int patternW
             if (maxDist < dist)
                 maxDist = dist;
         }
-        //std::cout<<"Dist: "<<maxDist <<std::endl;
         /// The distance should be less that a threashold, if it fits, its selected
-        if (maxDist < threshold)
+        if (maxDist < thresholdDistColinearity)
         {
-            
+            //std::cout<<"Dist: "<<maxDist <<std::endl;                    
             preSelectedLines.push_back(tmpLine);
             preSelectedLinesCombinations.push_back(combinations[i]);
         }
