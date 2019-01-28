@@ -3,9 +3,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include "include/patrecog.h"
-#include "include/camcalib.h"
 
-#define display 0
+#define display 1
 #define displayTest 0
 #define displayContinuosly 1
 #define printFrameCount 1
@@ -16,8 +15,8 @@
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
 //#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
-//#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
-#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
+#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
+//#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
 
 /// Test cam1
 //#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
@@ -37,11 +36,6 @@ enum Pattern
     RINGS_GRID
 };
 cv::Size patternSizes[] = {cv::Size(8, 6), cv::Size(5, 5), cv::Size(4, 11), cv::Size(5, 4)}; // Accoring to pattern
-float ctrlPointDistances[] = {0.026, 0.0, 0.0375, 0.0455}; // Meters real distances
-
-//** helping functions **//
-std::vector<cv::Point2f> getFrontoParallelCorners(cv::Size imgSize, cv::Size patternSize);
-std::vector<cv::Point2f> getPatternCorners(std::vector<cv::Point2f>& v, cv::Size size);
 
 int 
 main()
@@ -58,24 +52,6 @@ main()
     std::vector<cv::Vec4i> hierarchy;
     std::vector<cv::Point2f> pointbuf;
     std::vector<cv::Point2f> prevoiusPointbuf;
-
-    /// Camera Calibration variables
-    int nrSkip = 35;
-    int nrSamples = 25;
-    bool undistort = false;
-
-    /// Fronto Parallel
-    std::vector<cv::Mat> selectedFrames;
-        
-
-    //std::vector<std::vector<cv::Point3f>> objectPoints;
-    std::vector<std::vector<cv::Point2f>> imagePoints;
-    std::vector<cv::Mat> rvecs;
-    std::vector<cv::Mat> tvecs;
-    cv::Mat cameraMatrix;
-    cv::Mat distCoeffs;
-    std::vector<float> perViewError;
-    double rms;
 
     /// Testing variables
     int frameCount = 0;
