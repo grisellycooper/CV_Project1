@@ -5,7 +5,6 @@
 #include "include/patrecog.h"
 
 #define display 1
-#define displayTest 0
 #define displayContinuosly 1
 #define printFrameCount 1
 #define printTime 0

@@ -1,7 +1,7 @@
 #include "../include/patrecog.h"
 
 #define thresholdDistCircles 1.0f
-#define thresholdDistColinearity 5.0f  /// To prevent high distortion  
+#define thresholdDistColinearity 3.0f  /// To prevent high distortion  
 #define displayCompletePreprocess 0
 #define displayCompleteFilter1 0
 #define displayCompleteFilter2 0
