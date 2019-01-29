@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sol/MCS/Imagenes/CV_Project1/FrameSelection
+CMAKE_SOURCE_DIR = /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build
+CMAKE_BINARY_DIR = /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/output.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/output.dir/flags.make
 
 CMakeFiles/output.dir/src/frameselect.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/src/frameselect.cpp.o: ../src/frameselect.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/output.dir/src/frameselect.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/frameselect.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/frameselect.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/output.dir/src/frameselect.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/frameselect.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp
 
 CMakeFiles/output.dir/src/frameselect.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/output.dir/src/frameselect.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/frameselect.cpp > CMakeFiles/output.dir/src/frameselect.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp > CMakeFiles/output.dir/src/frameselect.cpp.i
 
 CMakeFiles/output.dir/src/frameselect.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/output.dir/src/frameselect.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/frameselect.cpp -o CMakeFiles/output.dir/src/frameselect.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp -o CMakeFiles/output.dir/src/frameselect.cpp.s
 
 CMakeFiles/output.dir/src/frameselect.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/output.dir/src/frameselect.cpp.o.provides.build: CMakeFiles/output.di
 
 CMakeFiles/output.dir/src/patrecog.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/src/patrecog.cpp.o: ../src/patrecog.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/output.dir/src/patrecog.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/patrecog.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/patrecog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/output.dir/src/patrecog.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/patrecog.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp
 
 CMakeFiles/output.dir/src/patrecog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/output.dir/src/patrecog.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/patrecog.cpp > CMakeFiles/output.dir/src/patrecog.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp > CMakeFiles/output.dir/src/patrecog.cpp.i
 
 CMakeFiles/output.dir/src/patrecog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/output.dir/src/patrecog.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/patrecog.cpp -o CMakeFiles/output.dir/src/patrecog.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp -o CMakeFiles/output.dir/src/patrecog.cpp.s
 
 CMakeFiles/output.dir/src/patrecog.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/output.dir/src/patrecog.cpp.o.provides.build: CMakeFiles/output.dir/s
 
 CMakeFiles/output.dir/main.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/output.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/main.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/output.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/main.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp
 
 CMakeFiles/output.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/output.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/main.cpp > CMakeFiles/output.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp > CMakeFiles/output.dir/main.cpp.i
 
 CMakeFiles/output.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/output.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/main.cpp -o CMakeFiles/output.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp -o CMakeFiles/output.dir/main.cpp.s
 
 CMakeFiles/output.dir/main.cpp.o.requires:
 
@@ -188,7 +188,7 @@ output: /usr/local/lib/libopencv_objdetect.so.4.0.0
 output: /usr/local/lib/libopencv_imgproc.so.4.0.0
 output: /usr/local/lib/libopencv_core.so.4.0.0
 output: CMakeFiles/output.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable output"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable output"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/output.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -207,6 +207,6 @@ CMakeFiles/output.dir/clean:
 .PHONY : CMakeFiles/output.dir/clean
 
 CMakeFiles/output.dir/depend:
-	cd /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sol/MCS/Imagenes/CV_Project1/FrameSelection /home/sol/MCS/Imagenes/CV_Project1/FrameSelection /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build /home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles/output.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/output.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/output.dir/depend
 

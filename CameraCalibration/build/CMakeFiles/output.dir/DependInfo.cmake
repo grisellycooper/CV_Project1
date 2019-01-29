@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/main.cpp" "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles/output.dir/main.cpp.o"
-  "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/frameselect.cpp" "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles/output.dir/src/frameselect.cpp.o"
-  "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/src/patrecog.cpp" "/home/sol/MCS/Imagenes/CV_Project1/FrameSelection/build/CMakeFiles/output.dir/src/patrecog.cpp.o"
+  "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp" "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/output.dir/main.cpp.o"
+  "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp" "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/output.dir/src/frameselect.cpp.o"
+  "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp" "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/output.dir/src/patrecog.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -172,7 +172,7 @@ main()
 		        bool captured = cv::imwrite(str,view.clone());
 
 		        if(!captured) 
-                    std::cout << "No se pudo Capturar Imagen " << countGood << std::endl;
+                    std::cout << "Frame wasn't captured!" << countGood << std::endl;
 	        }                
         }
         else

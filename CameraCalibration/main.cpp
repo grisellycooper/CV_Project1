@@ -1,4 +1,7 @@
+#include <stdio.h>
 #include <iostream>
+#include <cstring>
+#include <dirent.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -6,27 +9,9 @@
 #include "include/frameselect.h"
 
 #define display 1
-#define displayContinuosly 1
+#define displayContinuosly 0
 #define printFrameCount 1
 #define printTime 0
-
-//#define video_path "../../../videos/PadronCirculos_02.avi" // 4 x 11 circulos
-
-//#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
-//#define video_path "../../../videos/padron2.avi" // 20 Anillos
-//#define video_path "../../../videos/padron1.avi"  // 12 Anillos
-#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
-//#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
-
-/// Test cam1
-//#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
-//#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
-//#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
-
-/// Test cam2
-//#define video_path "../../../videos/cam2/anillos.avi"  // 5 x 4
-//#define video_path "../../../videos/cam2/circulos.avi"  // 4 x 11
-//#define video_path "../../../videos/cam2/chess.avi"  // 8 x 6
 
 enum Pattern
 {
@@ -36,6 +21,22 @@ enum Pattern
     RINGS_GRID
 };
 cv::Size patternSizes[] = {cv::Size(8, 6), cv::Size(5, 5), cv::Size(4, 11), cv::Size(5, 4)}; // Accoring to pattern
+
+void 
+getFiles (std::string dir, std::vector<std::string> &files)
+{
+    DIR *dp;
+    struct dirent *dirp;
+    if((dp  = opendir(dir.c_str())) == NULL) 
+        std::cout << "Error(" << errno << ") opening " << dir << std::endl;
+    
+    while ((dirp = readdir(dp)) != NULL) 
+    {
+        if(strcmp(dirp->d_name, ".") != 0 && strcmp(dirp->d_name, "..") != 0)
+            files.push_back(std::string(dirp->d_name));
+    }
+    closedir(dp);
+}
 
 int 
 main()
@@ -71,28 +72,26 @@ main()
     clock_t start, end;
     float sumTime = 0.0f;
 
-    int test = 0;
+    std::string dir = "../data/20_CP/";
+    std::vector<std::string> files = std::vector<std::string>();
 
-    cv::VideoCapture capture(video_path);
-    
-    for (;;)
+    getFiles(dir,files);
+
+    for (int i = 0;i < files.size();i++) 
     {
-        //std::string filename = "../data/InnerCircles" + std::to_string(i) + ".jpg";
-        //frame = cv::imread(filename, cv::IMREAD_COLOR);
-        
-        capture >> frame;                
-        if (frame.empty())
-            break;        
+        //std::cout << files[i] << std::endl;
+        frame = cv::imread(dir+files[i], cv::IMREAD_COLOR);
+        if( frame.empty() )
+        {
+            std::cout << "Couldn't load " << files[i] << std::endl;
+            continue;
+        }        
 
         view = frame.clone();
-        /// Getting frame features
-        frWidth = capture.get(cv::CAP_PROP_FRAME_WIDTH );
-        frHeight = capture.get(cv::CAP_PROP_FRAME_HEIGHT );
-        frFPS =  capture.get(cv::CAP_PROP_FPS);
-        
-        /*frWidth = frame.size().width;
+                
+        frWidth = frame.size().width;
         frHeight = frame.size().height;
-        frFPS =  capture.get(cv::CAP_PROP_FPS);        */
+        /*frFPS =  capture.get(cv::CAP_PROP_FPS);        */
 
         //std::cout<<"Frame: " << frWidth <<" x " <<frHeight <<" - "<<frFPS<<std::endl;
 
@@ -127,7 +126,7 @@ main()
             //std::cout<<"pointbufSize: " <<pointbuf.size() <<std::endl;
             if (pointbuf.size() == patternSize)
             {   
-                found = findRingsGrid(frame, patternSizes[pattern], pointbuf, prevoiusPointbuf, previousFound, minDistControlPoints);                   
+                found = findRingsGrid(frame, patternSizes[pattern], pointbuf, prevoiusPointbuf, false, minDistControlPoints);                   
                 /*if(found)
                     std::cout<<"patternSizeFound!!!" <<std::endl;*/
             }
@@ -157,23 +156,10 @@ main()
             frameCountFound++;
             cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
             
-            end = clock();
-            sumTime += (end - start) / (double)(CLOCKS_PER_SEC / 1000);
-            
-            previousFound = true;
-            prevoiusPointbuf = pointbuf;              
-
-            //** Frame Selection thing **//
-            if(isGoodFrameImp(frame, pointbuf, previousCornersBuf, previousCorners, patternSizes[pattern].width, patternSizes[pattern].height, minDistControlPoints)){
-                previousCorners = true;
-                std::cout << ++countGood <<std::endl;
-                
-		        std::string str = "../data/20_CP/" + std::to_string(countGood)+".jpg";
-		        bool captured = cv::imwrite(str,view.clone());
-
-		        if(!captured) 
-                    std::cout << "No se pudo Capturar Imagen " << countGood << std::endl;
-	        }                
+            /*end = clock();
+            sumTime += (end - start) / (double)(CLOCKS_PER_SEC / 1000);*/
+                       
+                           
         }
         else
         {
@@ -214,14 +200,12 @@ main()
         hierarchy.clear();
         pointbuf.clear();
     }
-    
+        
     if (printFrameCount == 1)
-        {            
-            std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
-            std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
-            std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
-            std::cout << "-----------------------------------" << std::endl;
-            /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
-            std::cout << "More than pattern size " << frameCountMore << std::endl;*/
-        }
+    {            
+        std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
+        std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
+        std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
+        std::cout << "-----------------------------------" << std::endl;        
+    }
 }
