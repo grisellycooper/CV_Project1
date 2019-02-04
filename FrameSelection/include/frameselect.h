@@ -10,6 +10,8 @@ bool isGoodFrame(cv::Mat src,
                  int patternHeigh,
                  float &minDistControlPoints);
 
+void initializeGrid(int framePerQt);
+
 //** 2nd version xD **//
 //** The pattern in a good frame should cover almost all frame in a camera-fronto-parallel way **//   
 bool isGoodFrameImp(cv::Mat src,

@@ -15,8 +15,8 @@
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
 //#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
-#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
-//#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
+//#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
+#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
 
 /// Test cam1
 //#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
@@ -27,6 +27,10 @@
 //#define video_path "../../../videos/cam2/anillos.avi"  // 5 x 4
 //#define video_path "../../../videos/cam2/circulos.avi"  // 4 x 11
 //#define video_path "../../../videos/cam2/chess.avi"  // 8 x 6
+
+#define cam "cam2"
+#define frameSample 50
+#define framePerQt 2
 
 enum Pattern
 {
@@ -58,6 +62,8 @@ main()
     std::vector<cv::Point2f> previousCornersBuf;
     bool previousCorners = false;
     float minDistControlPoints = 0.0f;                   /// MinDistance between two control points among all pattern
+    std::string camera(cam);
+    initializeGrid(framePerQt);
 
     /// Testing variables
     int frameCount = 0;
@@ -75,7 +81,8 @@ main()
 
     cv::VideoCapture capture(video_path);
     
-    for (;;)
+    //for (;;)
+    do
     {
         //std::string filename = "../data/InnerCircles" + std::to_string(i) + ".jpg";
         //frame = cv::imread(filename, cv::IMREAD_COLOR);
@@ -164,11 +171,12 @@ main()
             prevoiusPointbuf = pointbuf;              
 
             //** Frame Selection thing **//
-            if(isGoodFrameImp(frame, pointbuf, previousCornersBuf, previousCorners, patternSizes[pattern].width, patternSizes[pattern].height, minDistControlPoints)){
+            if(isGoodFrameImp(frame, pointbuf, previousCornersBuf, previousCorners, patternSizes[pattern].width, patternSizes[pattern].height, minDistControlPoints))
+            {
                 previousCorners = true;
                 std::cout << ++countGood <<std::endl;
-                
-		        std::string str = "../data/20_CP/" + std::to_string(countGood)+".jpg";
+                                
+		        std::string str = "../data/"+ camera + "/" +std::to_string(frameSample)+"/" + std::to_string(countGood)+".png";
 		        bool captured = cv::imwrite(str,view.clone());
 
 		        if(!captured) 
@@ -213,15 +221,15 @@ main()
         contours.clear();
         hierarchy.clear();
         pointbuf.clear();
-    }
+    }while(countGood < frameSample);
     
     if (printFrameCount == 1)
-        {            
-            std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
-            std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
-            std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
-            std::cout << "-----------------------------------" << std::endl;
-            /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
-            std::cout << "More than pattern size " << frameCountMore << std::endl;*/
-        }
+    {            
+        std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
+        std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
+        std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+        /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
+        std::cout << "More than pattern size " << frameCountMore << std::endl;*/
+    }
 }
