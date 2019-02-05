@@ -6,6 +6,16 @@
 
 #IncludeRegexTransform: 
 
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
+opencv2/opencv.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/calib3d.hpp
+-
+vector
+-
+
 /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/frameselect.h
 vector
 -
@@ -37,6 +47,12 @@ include/patrecog.h
 /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/patrecog.h
 include/frameselect.h
 /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/frameselect.h
+include/cameracalib.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
+
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/cameracalib.cpp
+../include/cameracalib.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
 
 /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp
 ../include/frameselect.h

@@ -57,9 +57,33 @@ include CMakeFiles/output.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/output.dir/flags.make
 
+CMakeFiles/output.dir/src/cameracalib.cpp.o: CMakeFiles/output.dir/flags.make
+CMakeFiles/output.dir/src/cameracalib.cpp.o: ../src/cameracalib.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/output.dir/src/cameracalib.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/cameracalib.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/cameracalib.cpp
+
+CMakeFiles/output.dir/src/cameracalib.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/output.dir/src/cameracalib.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/cameracalib.cpp > CMakeFiles/output.dir/src/cameracalib.cpp.i
+
+CMakeFiles/output.dir/src/cameracalib.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/output.dir/src/cameracalib.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/cameracalib.cpp -o CMakeFiles/output.dir/src/cameracalib.cpp.s
+
+CMakeFiles/output.dir/src/cameracalib.cpp.o.requires:
+
+.PHONY : CMakeFiles/output.dir/src/cameracalib.cpp.o.requires
+
+CMakeFiles/output.dir/src/cameracalib.cpp.o.provides: CMakeFiles/output.dir/src/cameracalib.cpp.o.requires
+	$(MAKE) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/src/cameracalib.cpp.o.provides.build
+.PHONY : CMakeFiles/output.dir/src/cameracalib.cpp.o.provides
+
+CMakeFiles/output.dir/src/cameracalib.cpp.o.provides.build: CMakeFiles/output.dir/src/cameracalib.cpp.o
+
+
 CMakeFiles/output.dir/src/frameselect.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/src/frameselect.cpp.o: ../src/frameselect.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/output.dir/src/frameselect.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/output.dir/src/frameselect.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/frameselect.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp
 
 CMakeFiles/output.dir/src/frameselect.cpp.i: cmake_force
@@ -83,7 +107,7 @@ CMakeFiles/output.dir/src/frameselect.cpp.o.provides.build: CMakeFiles/output.di
 
 CMakeFiles/output.dir/src/patrecog.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/src/patrecog.cpp.o: ../src/patrecog.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/output.dir/src/patrecog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/output.dir/src/patrecog.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/src/patrecog.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp
 
 CMakeFiles/output.dir/src/patrecog.cpp.i: cmake_force
@@ -107,7 +131,7 @@ CMakeFiles/output.dir/src/patrecog.cpp.o.provides.build: CMakeFiles/output.dir/s
 
 CMakeFiles/output.dir/main.cpp.o: CMakeFiles/output.dir/flags.make
 CMakeFiles/output.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/output.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/output.dir/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/output.dir/main.cpp.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp
 
 CMakeFiles/output.dir/main.cpp.i: cmake_force
@@ -131,6 +155,7 @@ CMakeFiles/output.dir/main.cpp.o.provides.build: CMakeFiles/output.dir/main.cpp.
 
 # Object files for target output
 output_OBJECTS = \
+"CMakeFiles/output.dir/src/cameracalib.cpp.o" \
 "CMakeFiles/output.dir/src/frameselect.cpp.o" \
 "CMakeFiles/output.dir/src/patrecog.cpp.o" \
 "CMakeFiles/output.dir/main.cpp.o"
@@ -138,6 +163,7 @@ output_OBJECTS = \
 # External object files for target output
 output_EXTERNAL_OBJECTS =
 
+output: CMakeFiles/output.dir/src/cameracalib.cpp.o
 output: CMakeFiles/output.dir/src/frameselect.cpp.o
 output: CMakeFiles/output.dir/src/patrecog.cpp.o
 output: CMakeFiles/output.dir/main.cpp.o
@@ -188,7 +214,7 @@ output: /usr/local/lib/libopencv_objdetect.so.4.0.0
 output: /usr/local/lib/libopencv_imgproc.so.4.0.0
 output: /usr/local/lib/libopencv_core.so.4.0.0
 output: CMakeFiles/output.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable output"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable output"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/output.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -196,6 +222,7 @@ CMakeFiles/output.dir/build: output
 
 .PHONY : CMakeFiles/output.dir/build
 
+CMakeFiles/output.dir/requires: CMakeFiles/output.dir/src/cameracalib.cpp.o.requires
 CMakeFiles/output.dir/requires: CMakeFiles/output.dir/src/frameselect.cpp.o.requires
 CMakeFiles/output.dir/requires: CMakeFiles/output.dir/src/patrecog.cpp.o.requires
 CMakeFiles/output.dir/requires: CMakeFiles/output.dir/main.cpp.o.requires

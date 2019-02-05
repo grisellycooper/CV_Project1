@@ -7,11 +7,15 @@
 
 #include "include/patrecog.h"
 #include "include/frameselect.h"
+#include "include/cameracalib.h"
 
 #define display 1
-#define displayContinuosly 0
+#define displayContinuosly 1
 #define printFrameCount 1
 #define printTime 0
+
+#define cam "cam1"
+#define frameSample 25
 
 enum Pattern
 {
@@ -21,6 +25,7 @@ enum Pattern
     RINGS_GRID
 };
 cv::Size patternSizes[] = {cv::Size(8, 6), cv::Size(5, 5), cv::Size(4, 11), cv::Size(5, 4)}; // Accoring to pattern
+float ctrlPointDistances[] = {0.026, 0.0, 0.0375, 0.0455}; // Meters real distances
 
 void 
 getFiles (std::string dir, std::vector<std::string> &files)
@@ -59,6 +64,13 @@ main()
     std::vector<cv::Point2f> previousCornersBuf;
     bool previousCorners = false;
     float minDistControlPoints = 0.0f;                   /// MinDistance between two control points among all pattern
+    std::string camera(cam); 
+
+    /// Camera calibration
+    std::vector<std::vector<cv::Point2f>> imagePoints;
+    float avgColinearityPerFrame = 0.0;
+    float finalAvgColinearity = 0.0;
+    double rms;
 
     /// Testing variables
     int frameCount = 0;
@@ -71,11 +83,14 @@ main()
     /// Time algorithm
     clock_t start, end;
     float sumTime = 0.0f;
-
-    std::string dir = "../data/20_CP/";
+    
+    std::string dir = "../data/"+ camera + "/" +std::to_string(frameSample)+"/";		        
     std::vector<std::string> files = std::vector<std::string>();
 
     getFiles(dir,files);
+
+    ///******* TEST ****///
+
 
     for (int i = 0;i < files.size();i++) 
     {
@@ -99,7 +114,7 @@ main()
         found = false;
         start = clock();
         
-        std::cout<<"Frame: "<<frameCount<<" -----------------------------------------------------------" <<std::endl;
+        //std::cout<<"Frame: "<<frameCount<<" -----------------------------------------------------------" <<std::endl;
 
         switch (pattern)
         {
@@ -156,10 +171,12 @@ main()
             frameCountFound++;
             cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
             
+            getAverageColinearity(pointbuf, patternSizes[pattern], avgColinearityPerFrame);
+            finalAvgColinearity += avgColinearityPerFrame; 
+            
+            imagePoints.push_back(pointbuf);
             /*end = clock();
             sumTime += (end - start) / (double)(CLOCKS_PER_SEC / 1000);*/
-                       
-                           
         }
         else
         {
@@ -178,7 +195,7 @@ main()
             else
             {
                 if (cv::waitKey() == 27)
-                    cv::waitKey(100);
+                    cv::waitKey(50);
             }
         }
 
@@ -200,12 +217,168 @@ main()
         hierarchy.clear();
         pointbuf.clear();
     }
+
+    /// Average colinearity before calibration
+    std::cout<<"Average Colinearity Before Undistortion: "<< finalAvgColinearity/frameCount <<std::endl;
+
+    ///** Parallel thing **//
+    cv::Mat temp, imgWarp, imgWarp_inv;
+    cv::Mat H;              /// Homography
+    std::vector<cv::Point2f> undistpointbuf;
+    std::vector<cv::Point2f> pointbuffp;
+    std::vector<cv::Point2f> pointbuffp_;
+    std::vector<cv::Point2f> corrected_points;
+    std::vector<std::vector<cv::Point2f>> imagePointsFP;
+    std::vector<std::vector<cv::Point2f>> tmpimagepoints;
+    
+    std::vector<cv::Point2f> frontopoints;
+    getFrontoParallelPoints(frontopoints, cv::Size(frWidth, frHeight), patternSizes[pattern], ctrlPointDistances[pattern]);
+    
+    ///** Initial Camera Calibration **///        
+    std::vector<std::vector<cv::Point3f>> objectPoints(1);                    
+    getControlPointsPositions(patternSizes[pattern], ctrlPointDistances[pattern], objectPoints[0], pattern);
+    objectPoints.resize(imagePoints.size(),objectPoints[0]);
+
+    cv::Mat cameraMatrix = cv::Mat::eye(3,3,CV_64F);
+    cv::Mat distCoeffs = cv::Mat::zeros(8, 1,CV_64F);    
+    std::vector<cv::Mat> rvecs;
+    std::vector<cv::Mat> tvecs;
+
+    frameCount = 0;
+    bool flag = true;
+    
+    for (int i = 0; i < 6; i++)
+    {
+        std::cout<<"-- imagePoints: "<<imagePoints.size()<<std::endl;
+                
+        rms = calibrateCamera(objectPoints, imagePoints, cv::Size(frWidth,frHeight), cameraMatrix, distCoeffs, rvecs, tvecs);
+
+        bool ok = (checkRange(cameraMatrix) && checkRange(distCoeffs));
+        if(!ok)
+            std::cout<<"Camera was not calibrated" <<std::endl;
+                        
+        std::cout <<std::endl;
+        std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;                
+        std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
+        std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
+        std::cout << "----------------------------" << std::endl;        
         
-    if (printFrameCount == 1)
-    {            
-        std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
-        std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
-        std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
-        std::cout << "-----------------------------------" << std::endl;        
-    }
+        if(flag)
+        {       
+            imagePointsFP.clear();
+            bool foundFP;
+            finalAvgColinearity = 0; 
+
+            int width = (patternSizes[pattern].width+1)*ctrlPointDistances[pattern]*1000;
+            int height = (patternSizes[pattern].height+1)*ctrlPointDistances[pattern]*1000;
+
+            for (int i = 0;i < files.size();i++) 
+            {
+                //std::cout << files[i] << std::endl;
+                frame = cv::imread(dir+files[i], cv::IMREAD_COLOR);
+                if( frame.empty() )
+                {
+                    std::cout << "Couldn't load " << files[i] << std::endl;
+                    continue;
+                } 
+
+                frameCount++;
+                
+                /*frWidth = frame.size().width;
+                frHeight = frame.size().height;
+                std::cout<<"Frame: " << frWidth <<" x " <<frHeight <<std::endl;*/
+                //std::cout<<"Frame: "<<++frameCount<<" -----------------------------------------------------------" <<std::endl;
+                
+                temp = frame.clone();
+                cv::Mat OptimalMatrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, cv::Size(frWidth,frHeight), 1.0);
+                cv::undistort(temp,frame,cameraMatrix,distCoeffs,OptimalMatrix);                    
+                cv::undistortPoints(imagePoints[i], undistpointbuf, cameraMatrix, distCoeffs, cv::noArray(), OptimalMatrix);
+
+                cv::namedWindow("Undistort frame", cv::WINDOW_NORMAL);
+                imshow("Undistort frame", frame);
+
+                getAverageColinearity(undistpointbuf, patternSizes[pattern], avgColinearityPerFrame);
+                finalAvgColinearity += avgColinearityPerFrame; 
+                    
+                /*getAverageColinearity(imagePoints[i], patternSizes[pattern], avgColinearityPerFrame);
+                std::cout<<"Old avgColinearity: "<<avgColinearityPerFrame <<std::endl;
+
+                getAverageColinearity(pointbufpar, patternSizes[pattern], avgColinearityPerFrame);
+                std::cout<<"New avgColinearity: " <<avgColinearityPerFrame <<std::endl;; */
+                                
+                /*std::cout<<"imagePoints - new pointbuffer" <<std::endl;
+                for(int l = 0; l < pointbufpar.size(); l++){
+                    std::cout<<" " <<imagePoints[i][l].x <<", " <<imagePoints[i][l].y <<"  /-/  " <<pointbufpar[l].x <<", " <<pointbufpar[l].y<<std::endl;            
+                }*/
+
+                H = cv::findHomography(undistpointbuf,frontopoints);	        
+                cv::warpPerspective(temp,imgWarp,H,cv::Size(width, height));
+                    
+                cv::namedWindow("ImgWarp", cv::WINDOW_AUTOSIZE); 
+                imshow("ImgWarp", imgWarp);       
+
+                ///*** Find pattern ***///
+                foundFP = false;
+                pointbuffp.clear();		
+                
+                foundFP = findPatternFP(imgWarp, patternSizes[pattern].width, patternSizes[pattern].height, pointbuffp);
+                            
+                if(foundFP){
+                    cv::warpPerspective(imgWarp,imgWarp_inv,H.inv(),temp.size());                
+                    cv::perspectiveTransform( pointbuffp, pointbuffp_, H.inv() );
+                    cv::undistortPoints(pointbuffp_,corrected_points,OptimalMatrix,-distCoeffs,cv::noArray(),cameraMatrix);
+                        
+                    imagePointsFP.push_back(corrected_points);
+                    //std::cout<<"imagePointsFP.size " <<imagePointsFP.size() <<std::endl;
+
+                    cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, foundFP);
+                        
+                    cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
+                    imshow("ImgWarp Inv", imgWarp_inv);
+                }
+                else{
+                    std::cout << "Pattern NOT found in the parallel frame!\n";
+                }
+                
+                if (cv::waitKey() == 27)
+                    cv::waitKey(100);
+                        
+            }
+
+            /// Replace old image points
+            //imagePoints.clear();
+            //imagePoints = imagePointsFP;
+            
+            /// Get the average
+            tmpimagepoints.clear();
+            tmpimagepoints = imagePoints;
+
+            std::cout<<"imagePoints: "<<imagePoints.size()<<std::endl;
+            std::cout<<"imagePointsFP: "<<imagePointsFP.size()<<std::endl;
+            std::cout<<"tmpimagepoints: "<<tmpimagepoints.size()<<std::endl;
+
+            /* std::cout<<"tmpimagepoints ------------: "<<std::endl;
+
+            for(int ip = 0; ip < patternSize; ip++){
+                std::cout<<ip <<" -> "<<tmpimagepoints[24][ip] <<std::endl;
+            } */
+
+            for (int f = 0; f < frameCount; f++){
+                for(int ip = 0; ip < tmpimagepoints.size(); ip++){
+                    imagePoints[f][ip].x = (tmpimagepoints[f][ip].x + imagePointsFP[f][ip].x)/2;
+                    imagePoints[f][ip].y = (tmpimagepoints[f][ip].y + imagePointsFP[f][ip].y)/2;
+                }
+            }        
+
+            /* std::cout<<"ImagePoints ------------: "<<std::endl;
+            for(int ip = 0; ip < patternSize; ip++){
+                std::cout<<ip <<" -> "<<imagePoints[24][ip] <<std::endl;
+            } */
+
+            std::cout<<"imagePoints: "<<imagePoints.size()<<std::endl;
+            std::cout<<"Average Colinearity After Undistorion: "<< finalAvgColinearity/frameCount <<std::endl;
+
+            //flag = false;
+        }
+    }    
 }

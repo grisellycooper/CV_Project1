@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/cameracalib.o: src/cameracalib.cpp.o
+
+.PHONY : src/cameracalib.o
+
+# target to build an object file
+src/cameracalib.cpp.o:
+	$(MAKE) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/src/cameracalib.cpp.o
+.PHONY : src/cameracalib.cpp.o
+
+src/cameracalib.i: src/cameracalib.cpp.i
+
+.PHONY : src/cameracalib.i
+
+# target to preprocess a source file
+src/cameracalib.cpp.i:
+	$(MAKE) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/src/cameracalib.cpp.i
+.PHONY : src/cameracalib.cpp.i
+
+src/cameracalib.s: src/cameracalib.cpp.s
+
+.PHONY : src/cameracalib.s
+
+# target to generate assembly for a file
+src/cameracalib.cpp.s:
+	$(MAKE) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/src/cameracalib.cpp.s
+.PHONY : src/cameracalib.cpp.s
+
 src/frameselect.o: src/frameselect.cpp.o
 
 .PHONY : src/frameselect.o
@@ -216,6 +243,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/cameracalib.o"
+	@echo "... src/cameracalib.i"
+	@echo "... src/cameracalib.s"
 	@echo "... src/frameselect.o"
 	@echo "... src/frameselect.i"
 	@echo "... src/frameselect.s"

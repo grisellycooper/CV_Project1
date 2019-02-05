@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/output.dir/src/cameracalib.cpp.o"
   "CMakeFiles/output.dir/src/frameselect.cpp.o"
   "CMakeFiles/output.dir/src/patrecog.cpp.o"
   "CMakeFiles/output.dir/main.cpp.o"

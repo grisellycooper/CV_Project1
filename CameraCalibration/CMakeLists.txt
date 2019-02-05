@@ -27,10 +27,11 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 include_directories(include)
 
 # Set source directory
-set(SOURCES src/frameselect.cpp src/patrecog.cpp main.cpp)
+file(GLOB main_file "${CMAKE_SOURCE_DIR}/main.cpp")
+file(GLOB src_files "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 # Declare the executable target built from your sources
-add_executable(output ${SOURCES})
+add_executable(output ${src_files} ${main_file})
 
 # Link your application with OpenCV libraries
 target_link_libraries(output ${OpenCV_LIBS})
