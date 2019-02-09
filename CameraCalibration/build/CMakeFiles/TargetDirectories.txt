@@ -1,3 +1,0 @@
-/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/rebuild_cache.dir
-/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/output.dir
-/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/edit_cache.dir
