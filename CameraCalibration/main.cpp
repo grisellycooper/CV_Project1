@@ -364,9 +364,9 @@ main()
             } */
 
             for (int f = 0; f < frameCount; f++){
-                for(int ip = 0; ip < tmpimagepoints.size(); ip++){
-                    imagePoints[f][ip].x = (tmpimagepoints[f][ip].x + imagePointsFP[f][ip].x)/2;
-                    imagePoints[f][ip].y = (tmpimagepoints[f][ip].y + imagePointsFP[f][ip].y)/2;
+                for(int ip = 0; ip < patternSize; ip++){
+                    imagePoints[f][ip].x = (tmpimagepoints[f][ip].x + imagePointsFP[f][ip].x)/2.0;
+                    imagePoints[f][ip].y = (tmpimagepoints[f][ip].y + imagePointsFP[f][ip].y)/2.0;
                 }
             }        
 
