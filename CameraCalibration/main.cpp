@@ -245,7 +245,7 @@ int main()
     std::vector<cv::Mat> rvecs;
     std::vector<cv::Mat> tvecs;
 
-    for (int iter = 0; iter < 30; iter++)
+    for (int iter = 0; iter < 60; iter++)
     {
         cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
         distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
@@ -268,9 +268,9 @@ int main()
 
         /* std::cout <<std::endl;
         std::cout << "RMS: " << rms <<std::endl;
-        std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;
-        std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
-        */
+        std::cout << "Intrinsic camera matrix" << std::endl << cameraMatrix << std::endl;*/
+        //std::cout << "Distortion coefficients" << std::endl << distCoeffs << std::endl;
+        
 
         std::cout << iter << " " << cameraMatrix.at<double>(0, 0) << " " << cameraMatrix.at<double>(1, 1) << " " << cameraMatrix.at<double>(0, 2) << " " << cameraMatrix.at<double>(1, 2) << " " << rms << " ";
 
@@ -332,9 +332,9 @@ int main()
                 }
                 std::cout<<std::endl;
  */
-            /* cv::namedWindow("ImgWarp", cv::WINDOW_AUTOSIZE); 
-                imshow("ImgWarp", imgWarp);       
- */
+            cv::namedWindow("ImgWarp", cv::WINDOW_AUTOSIZE); 
+            imshow("ImgWarp", imgWarp);       
+
             ///*** Find pattern ***///
             foundFP = false;
             pointbuffp.clear();
@@ -373,8 +373,8 @@ int main()
 
                 cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, foundFP);
 
-                /* cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
-                    imshow("ImgWarp Inv", imgWarp_inv); */
+                cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
+                imshow("ImgWarp Inv", imgWarp_inv);
             }
             else
             {
@@ -382,7 +382,7 @@ int main()
             }
 
             //if (cv::waitKey() == 27)
-            cv::waitKey(50);
+                cv::waitKey(100);
         }
 
         /// Replace old image points
@@ -391,8 +391,8 @@ int main()
             
         /// Get the average
         /* tmpimagepoints.clear();
-        tmpimagepoints = imagePoints;
-         */
+        tmpimagepoints = imagePoints; */
+         
         /* std::cout<<"imagePoints: "<<imagePoints.size()<<std::endl;
             std::cout<<"imagePointsFP: "<<imagePointsFP.size()<<std::endl;
             std::cout<<"tmpimagepoints: "<<tmpimagepoints.size()<<std::endl;

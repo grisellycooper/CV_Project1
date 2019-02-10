@@ -16,10 +16,10 @@
 //#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
 //#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
-#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
+//#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
 
 /// Test cam1
-//#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
+#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
 //#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
 //#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
 
@@ -28,9 +28,9 @@
 //#define video_path "../../../videos/cam2/circulos.avi"  // 4 x 11
 //#define video_path "../../../videos/cam2/chess.avi"  // 8 x 6
 
-#define cam "cam2"
-#define frameSample 50
-#define framePerQt 2
+#define cam "cam1"
+#define frameSample 25
+#define framePerQt 1
 
 enum Pattern
 {
@@ -171,12 +171,12 @@ main()
             prevoiusPointbuf = pointbuf;              
 
             //** Frame Selection thing **//
-            if(isGoodFrameImp(frame, pointbuf, previousCornersBuf, previousCorners, patternSizes[pattern].width, patternSizes[pattern].height, minDistControlPoints))
+            if(isGoodFrame(frame, pointbuf, previousCornersBuf, previousCorners, patternSizes[pattern].width, patternSizes[pattern].height, minDistControlPoints))
             {
                 previousCorners = true;
                 std::cout << ++countGood <<std::endl;
                                 
-		        std::string str = "../data/"+ camera + "/" +std::to_string(frameSample)+"/" + std::to_string(countGood)+".png";
+		        std::string str = "../data2/"+ camera + "/" +std::to_string(frameSample)+"/" + std::to_string(countGood)+".png";
 		        bool captured = cv::imwrite(str,view.clone());
 
 		        if(!captured) 

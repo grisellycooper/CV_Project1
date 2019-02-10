@@ -4,6 +4,8 @@
 /PatternDetection/data
 /FrameSelection/build
 /FrameSelection/data
-/CameraCalibration/build
+/FrameSelection/data2
+/CameraCalibratiion/build/
 /CameraCalibration/data
 gg.txt
+/PD_CC
