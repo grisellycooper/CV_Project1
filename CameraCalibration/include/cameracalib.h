@@ -26,3 +26,9 @@ bool findPatternFP(cv::Mat inputFrame,
                    int pointsPerRow, 
                    int pointsPerColum, 
                    std::vector<cv::Point2f> &pointbuffp);
+
+void getAverageWithColinearPoints(std::vector<cv::Point2f>& inpointbuf,
+                                  std::vector<cv::Point2f>& outpointbuf,
+                                  cv::Mat frame,
+                                  cv::Size size,
+                                  float &avgColinearity);

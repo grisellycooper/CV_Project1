@@ -10,7 +10,7 @@
 #include "include/cameracalib.h"
 
 #define display 1
-#define displayContinuosly 1
+#define displayContinuosly 0
 #define printFrameCount 1
 #define printTime 0
 
@@ -226,6 +226,7 @@ int main()
     std::vector<cv::Point2f> pointbuffp;
     std::vector<cv::Point2f> pointbuffp_;
     std::vector<cv::Point2f> corrected_points;
+    std::vector<cv::Point2f> colinear_points;
     std::vector<std::vector<cv::Point2f>> imagePointsFP;
     std::vector<std::vector<cv::Point2f>> tmpimagepoints;
 
@@ -309,6 +310,7 @@ int main()
 
             getAverageColinearity(undistpointbuf, patternSizes[pattern], avgColinearityPerFrame);
             finalAvgColinearity += avgColinearityPerFrame;
+            //getAverageWithColinearPoints(undistpointbuf, colinear_points, frame, patternSizes[pattern], avgColinearityPerFrame);
 
             /*getAverageColinearity(imagePoints[i], patternSizes[pattern], avgColinearityPerFrame);
                 std::cout<<"Old avgColinearity: "<<avgColinearityPerFrame <<std::endl;
@@ -381,7 +383,7 @@ int main()
                 std::cout << "Pattern NOT found in the parallel frame!\n";
             }
 
-            //if (cv::waitKey() == 27)
+            if (cv::waitKey() == 27)
                 cv::waitKey(100);
         }
 

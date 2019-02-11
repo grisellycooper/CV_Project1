@@ -4,8 +4,8 @@
 
 #include "include/patrecog.h"
 
-#define display 1
-#define displayContinuosly 1
+#define display 0
+#define displayContinuosly 0
 #define printFrameCount 1
 #define printTime 0
 
@@ -14,13 +14,13 @@
 //#define video_path "../../../videos/PadronAnillos_01.avi"  // 30 Anillos
 //#define video_path "../../../videos/padron2.avi" // 20 Anillos
 //#define video_path "../../../videos/padron1.avi"  // 12 Anillos
-#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
+//#define video_path "../../../videos/cam1_anillos.mp4"  // 12 Anillos
 //#define video_path "../../../videos/cam2_anillos.avi"  // 12 Anillos
 
 /// Test cam1
 //#define video_path "../../../videos/cam1/anillos.mp4"  // 5 x 4
 //#define video_path "../../../videos/cam1/asymcir.mp4"  // 4 x 11
-//#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
+#define video_path "../../../videos/cam1/chess2.mp4"  // 8 x 6
 
 /// Test cam2
 //#define video_path "../../../videos/cam2/anillos.avi"  // 5 x 4
@@ -39,7 +39,7 @@ cv::Size patternSizes[] = {cv::Size(8, 6), cv::Size(5, 5), cv::Size(4, 11), cv::
 int 
 main()
 {
-    Pattern pattern = RINGS_GRID;
+    Pattern pattern = CHESSBOARD;
     int patternSize = patternSizes[pattern].width * patternSizes[pattern].height;
     cv::Mat frame, view;
     float frWidth, frHeight, frFPS;
@@ -180,14 +180,14 @@ main()
         {
             //std::cout<<" Time:  ";
             
-            if (frameCount % 20 == 0)
+            /* if (frameCountFound % 20 == 0)
             {
                 sumTime = sumTime / 20.0;
                 //std::cout << "Frame: " << frameCount << " Time: " << (end - start)/(double)( CLOCKS_PER_SEC / 1000 ) << " ms." <<std::endl;
                 //std::cout << (end - start) / (double)(CLOCKS_PER_SEC / 1000) << std::endl;
                 std::cout << sumTime <<std::endl;
                 sumTime = 0.0;
-            }
+            } */
         }
 
         contours.clear();
@@ -196,12 +196,12 @@ main()
     }
     
     if (printFrameCount == 1)
-        {            
-            std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
-            std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
-            std::cout << "Average time pattern detection " << sumTime / frameCount << std::endl;
-            std::cout << "-----------------------------------" << std::endl;
-            /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
-            std::cout << "More than pattern size " << frameCountMore << std::endl;*/
-        }
+    {            
+        std::cout << "Complete rings were detected in " << frameCountFound << " out of " << frameCount << " frames" << std::endl;
+        std::cout << "--> " << (frameCountFound * 100) / frameCount << "% frames" << std::endl;
+        std::cout << "Average time pattern detection " << sumTime / frameCountFound << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+        /*std::cout << "Less than pattern size " << frameCountLess << std::endl;
+        std::cout << "More than pattern size " << frameCountMore << std::endl;*/
+    }
 }
