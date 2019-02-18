@@ -1,7 +1,7 @@
 #include "../include/cameracalib.h"
 
 #define displayCompletePreprocess 0 
-#define displayColinearity 1
+#define displayColinearity 0
 
 enum Pattern
 {
@@ -47,6 +47,7 @@ getControlPointsPositions(cv::Size size,
 
 void 
 getAverageColinearity(std::vector<cv::Point2f>& pointbuf,
+                      cv::Mat frame,
                       cv::Size size,
                       float &avgColinearity)
 {
@@ -55,10 +56,11 @@ getAverageColinearity(std::vector<cv::Point2f>& pointbuf,
     float sumDistsPerLine = 0.0; 
     float sumDistances = 0.0; 
     cv::Point2f a, b;
-    
+    //cv::Mat colinearity = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+
     for(int i = 0; i < size.height; i++){                
-        for(int j = i; j < size.width; j++){
-            tmpPoints[j] = pointbuf[i*j];
+        for(int c = 0, j = size.width; c < size.width; c++){
+            tmpPoints[c] = pointbuf[j*i+c];
         }
         
         /// Fit line
@@ -67,16 +69,27 @@ getAverageColinearity(std::vector<cv::Point2f>& pointbuf,
         /// tmpLine -> [vx, vy, x0, y0] -> (vx, vy) is a normalized vector collinear to the line and (x0, y0) is a point on the linefloat vx = tmpLine[0],vy = tmpLine[1], x0 = tmpLine[2],y0 = tmpLine[3];
         a = cv::Point2f(tmpLine[2], tmpLine[3]);
         b = cv::Point2f(tmpLine[0], tmpLine[1]);
+        sumDistsPerLine = 0.0;
         
         for(int k = 0; k < size.width; k++)
         {
             float t = ( tmpPoints[k].dot(b) - a.dot(b) ) / (cv::norm(b) * cv::norm(b));
             float dist = cv::norm(tmpPoints[k] - (a + t * b));
+            //cv::circle(colinearity, cv::Point2f(tmpPoints[k]), 1, cv::Scalar(0, 255, 0), 4, 8);
+            //cv::circle(colinearity, cv::Point2f(a + t * b), 1, cv::Scalar(0, 0, 255), 4, 8);
             sumDistsPerLine += dist;
         }
+        //cv::line(colinearity, cv::Point2f(tmpLine[2],tmpLine[3]), cv::Point2f(tmpLine[2]+tmpLine[0]*5,tmpLine[3]+tmpLine[1]*5), cv::Scalar(0,255,0), 1, 8, 0);
+
         sumDistances += sumDistsPerLine/size.width;        
     }
     avgColinearity = sumDistances/size.height; 
+    
+    /* if(displayColinearity == 1){
+        
+        cv::namedWindow("Colinearity", cv::WINDOW_NORMAL);
+        imshow("Colinearity", colinearity);    
+    } */    
 }
 
 void 
@@ -91,11 +104,11 @@ getAverageWithColinearPoints(std::vector<cv::Point2f>& inpointbuf,
     float sumDistsPerLine = 0.0; 
     float sumDistances = 0.0; 
     cv::Point2f a, b;
-    cv::Mat colinearity = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+    //cv::Mat colinearity = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
 
     for(int i = 0; i < size.height; i++){                
-        for(int j = i; j < size.width; j++){
-            tmpPoints[j] = inpointbuf[i*j];
+        for(int c = 0, j = size.width; c < size.width; c++){
+            tmpPoints[c] = inpointbuf[j*i+c];
         }
         
         /// Fit line
@@ -110,17 +123,22 @@ getAverageWithColinearPoints(std::vector<cv::Point2f>& inpointbuf,
             float t = ( tmpPoints[k].dot(b) - a.dot(b) ) / (cv::norm(b) * cv::norm(b));
             float dist = cv::norm(tmpPoints[k] - (a + t * b));
             sumDistsPerLine += dist;
+            outpointbuf.push_back(cv::Point2f(a + t * b));
+            //cv::circle(colinearity, cv::Point2f(x,y), 1, cv::Scalar(0, 0, 255), 4, 8);
         }
-        cv::line(colinearity, cv::Point2f(tmpLine[2],tmpLine[3]), cv::Point2f(tmpLine[2]+tmpLine[0]*5,tmpLine[3]+tmpLine[1]*5), cv::Scalar(0,255,0), 1, 8, 0);
+        //cv::line(colinearity, cv::Point2f(tmpLine[2],tmpLine[3]), cv::Point2f(tmpLine[2]+tmpLine[0]*5,tmpLine[3]+tmpLine[1]*5), cv::Scalar(0,255,0), 1, 8, 0);
         sumDistances += sumDistsPerLine/size.width;        
     }
     avgColinearity = sumDistances/size.height; 
 
-    if(displayColinearity == 1){
-        
-        cv::namedWindow("Colinearity", cv::WINDOW_AUTOSIZE);
+    /* for(int i = 0; i < outpointbuf.size() ; i++){
+        //cv::circle(colinearity, cv::Point2f(outpointbuf[i]), 1, cv::Scalar(0, 0, 255), 4, 8);
+        //cv::putText(colinearity, std::to_string(i), outpointbuf[i], cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(250, 0, 0), 2);
+    } */
+    /* if(displayColinearity == 1){        
+        cv::namedWindow("Colinearity", cv::WINDOW_NORMAL);
         imshow("Colinearity", colinearity);    
-    }
+    } */
 }
 
 void

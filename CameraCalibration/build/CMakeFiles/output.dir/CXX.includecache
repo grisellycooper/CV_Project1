@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/cameracalib.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
 opencv2/opencv.hpp
 -
 opencv2/imgproc/imgproc.hpp
@@ -16,13 +16,13 @@ opencv2/calib3d.hpp
 vector
 -
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/frameselect.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/frameselect.h
 vector
 -
 opencv2/opencv.hpp
 -
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/patrecog.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/patrecog.h
 vector
 -
 opencv2/opencv.hpp
@@ -30,7 +30,7 @@ opencv2/opencv.hpp
 opencv2/imgproc/imgproc.hpp
 -
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/main.cpp
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/main.cpp
 stdio.h
 -
 iostream
@@ -44,23 +44,23 @@ opencv2/opencv.hpp
 opencv2/imgproc/imgproc.hpp
 -
 include/patrecog.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/patrecog.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/patrecog.h
 include/frameselect.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/frameselect.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/frameselect.h
 include/cameracalib.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/cameracalib.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/src/cameracalib.cpp
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/cameracalib.cpp
 ../include/cameracalib.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/cameracalib.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/cameracalib.h
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/src/frameselect.cpp
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/frameselect.cpp
 ../include/frameselect.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/frameselect.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/frameselect.h
 
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/src/patrecog.cpp
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/src/patrecog.cpp
 ../include/patrecog.h
-/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/include/patrecog.h
+/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/include/patrecog.h
 
 /usr/local/include/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -1265,4 +1265,8 @@ opencv2/videostab/global_motion.hpp
 /usr/local/include/opencv2/videostab/opencv2/videostab/global_motion.hpp
 opencv2/videostab/log.hpp
 /usr/local/include/opencv2/videostab/opencv2/videostab/log.hpp
+
+/usr/local/include/opencv2/xfeatures2d/cuda.hpp
+opencv2/core/cuda.hpp
+/usr/local/include/opencv2/xfeatures2d/opencv2/core/cuda.hpp
 

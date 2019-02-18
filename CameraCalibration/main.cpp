@@ -10,11 +10,13 @@
 #include "include/cameracalib.h"
 
 #define display 1
-#define displayContinuosly 0
+#define displayContinuosly 1
 #define printFrameCount 1
 #define printTime 0
+#define calibrateContinuosly 1
+#define displayFrontoThing 1
 
-#define cam "cam2"
+#define cam "cam1"
 #define frameSample 25
 
 enum Pattern
@@ -169,7 +171,7 @@ int main()
             frameCountFound++;
             cv::drawChessboardCorners(frame, patternSizes[pattern], pointbuf, found);
 
-            getAverageColinearity(pointbuf, patternSizes[pattern], avgColinearityPerFrame);
+            getAverageColinearity(pointbuf, frame, patternSizes[pattern], avgColinearityPerFrame);
             finalAvgColinearity += avgColinearityPerFrame;
 
             imagePoints.push_back(pointbuf);
@@ -305,10 +307,15 @@ int main()
             cv::undistort(temp, frame, cameraMatrix, distCoeffs, OptimalMatrix);
             cv::undistortPoints(imagePoints[i], undistpointbuf, cameraMatrix, distCoeffs, cv::noArray(), OptimalMatrix);
 
-            cv::namedWindow("Undistort frame", cv::WINDOW_NORMAL);
-            imshow("Undistort frame", frame);
-
-            getAverageColinearity(undistpointbuf, patternSizes[pattern], avgColinearityPerFrame);
+            if(displayFrontoThing == 1){
+                cv::namedWindow("Undistort frame", cv::WINDOW_NORMAL);
+                imshow("Undistort frame", frame);
+            }
+            
+            //getAverageColinearity(undistpointbuf, frame, patternSizes[pattern], avgColinearityPerFrame);
+            colinear_points.clear();
+            getAverageWithColinearPoints(undistpointbuf, colinear_points, frame, patternSizes[pattern], avgColinearityPerFrame);
+            tmpimagepoints.push_back(colinear_points);
             finalAvgColinearity += avgColinearityPerFrame;
             //getAverageWithColinearPoints(undistpointbuf, colinear_points, frame, patternSizes[pattern], avgColinearityPerFrame);
 
@@ -334,8 +341,10 @@ int main()
                 }
                 std::cout<<std::endl;
  */
-            cv::namedWindow("ImgWarp", cv::WINDOW_AUTOSIZE); 
-            imshow("ImgWarp", imgWarp);       
+            if(displayFrontoThing == 1){
+                cv::namedWindow("ImgWarp", cv::WINDOW_AUTOSIZE); 
+                imshow("ImgWarp", imgWarp);       
+            }
 
             ///*** Find pattern ***///
             foundFP = false;
@@ -373,27 +382,44 @@ int main()
                 imagePointsFP.push_back(corrected_points);
                 //std::cout<<"imagePointsFP.size " <<imagePointsFP.size() <<std::endl;
 
-                cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, foundFP);
-
-                cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
-                imshow("ImgWarp Inv", imgWarp_inv);
+                if(displayFrontoThing == 1){            
+                    cv::drawChessboardCorners(imgWarp_inv, patternSizes[pattern], corrected_points, foundFP);                
+                    cv::namedWindow("ImgWarp Inv", cv::WINDOW_NORMAL); 
+                    imshow("ImgWarp Inv", imgWarp_inv);                
+                }
             }
             else
             {
                 std::cout << "Pattern NOT found in the parallel frame!\n";
             }
 
-            if (cv::waitKey() == 27)
+            if(calibrateContinuosly == 1 ){
                 cv::waitKey(100);
+            }                
+            else
+            {
+                if (cv::waitKey() == 27)
+                    cv::waitKey(100);
+            }
+
+            /* cv::Mat finalPointsAvg = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC3);
+            for(int x = 0; x < patternSize; x++){
+                cv::circle(finalPointsAvg, cv::Point2f(imagePoints[i][x]), 1, cv::Scalar(0, 0, 255), 4, 8);
+                cv::circle(finalPointsAvg, cv::Point2f(pointbuffp_[x]), 1, cv::Scalar(0, 255, 0), 4, 8);
+                cv::circle(finalPointsAvg, cv::Point2f(colinear_points[x]), 1, cv::Scalar(255, 0, 0), 4, 8);
+            }
+
+            cv::namedWindow("finalPointsAvg", cv::WINDOW_NORMAL); 
+            imshow("finalPointsAvg", finalPointsAvg);                 */
         }
 
         /// Replace old image points
-        imagePoints.clear();
-        imagePoints = imagePointsFP;
+        //imagePoints.clear();
+        //imagePoints = imagePointsFP;
             
         /// Get the average
-        /* tmpimagepoints.clear();
-        tmpimagepoints = imagePoints; */
+        /*tmpimagepoints.clear();
+        tmpimagepoints = imagePoints;*/
          
         /* std::cout<<"imagePoints: "<<imagePoints.size()<<std::endl;
             std::cout<<"imagePointsFP: "<<imagePointsFP.size()<<std::endl;
@@ -406,14 +432,23 @@ int main()
                 std::cout<<ip <<" -> "<<tmpimagepoints[24][ip] <<std::endl;
             } */
 
-        /* for (int f = 0; f < frameCount; f++)
+        for (int f = 0; f < frameCount; f++)
         {
             for (int ip = 0; ip < patternSize; ip++)
             {
-                imagePoints[f][ip].x = (tmpimagepoints[f][ip].x + imagePointsFP[f][ip].x) / 2.0;
-                imagePoints[f][ip].y = (tmpimagepoints[f][ip].y + imagePointsFP[f][ip].y) / 2.0;
+                imagePoints[f][ip].x = (imagePoints[f][ip].x + imagePointsFP[f][ip].x + tmpimagepoints[f][ip].x) / 3.0;
+                imagePoints[f][ip].y = (imagePoints[f][ip].y + imagePointsFP[f][ip].y + tmpimagepoints[f][ip].y) / 3.0;                
             }
-        } */
+        }
+
+        /*for (int f = 0; f < frameCount; f++)
+        {
+            for (int ip = 0; ip < patternSize; ip++)
+            {
+                imagePoints[f][ip].x = (imagePoints[f][ip].x + imagePointsFP[f][ip].x ) / 2.0;
+                imagePoints[f][ip].y = (imagePoints[f][ip].y + imagePointsFP[f][ip].y ) / 2.0;                
+            }
+        } */ 
 
         /* std::cout<<"ImagePoints ------------: "<<std::endl;
             for(int ip = 0; ip < patternSize; ip++){

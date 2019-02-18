@@ -1,6 +1,6 @@
 #include "../include/frameselect.h"
 
-#define displaySelector 1
+#define displaySelector 0
 #define i 8 
 
 bool 

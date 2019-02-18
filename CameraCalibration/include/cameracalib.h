@@ -13,6 +13,7 @@ void getControlPointsPositions(cv::Size size,
 
 /* Compute and average colinearity for every frame */
 void getAverageColinearity(std::vector<cv::Point2f>& imagePoints,
+                           cv::Mat frame,
                            cv::Size size, 
                            float &avgColiniearity);
 

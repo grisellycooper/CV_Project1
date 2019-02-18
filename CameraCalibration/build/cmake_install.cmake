@@ -1,4 +1,4 @@
-# Install script for directory: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration
+# Install script for directory: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

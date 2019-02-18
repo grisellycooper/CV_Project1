@@ -123,6 +123,7 @@ CMakeFiles/output.dir/main.cpp.o: /usr/local/include/opencv2/videostab/outlier_r
 CMakeFiles/output.dir/main.cpp.o: /usr/local/include/opencv2/videostab/ring_buffer.hpp
 CMakeFiles/output.dir/main.cpp.o: /usr/local/include/opencv2/videostab/stabilizer.hpp
 CMakeFiles/output.dir/main.cpp.o: /usr/local/include/opencv2/videostab/wobble_suppression.hpp
+CMakeFiles/output.dir/main.cpp.o: /usr/local/include/opencv2/xfeatures2d/cuda.hpp
 
 CMakeFiles/output.dir/src/cameracalib.cpp.o: ../include/cameracalib.h
 CMakeFiles/output.dir/src/cameracalib.cpp.o: ../src/cameracalib.cpp
@@ -244,6 +245,7 @@ CMakeFiles/output.dir/src/cameracalib.cpp.o: /usr/local/include/opencv2/videosta
 CMakeFiles/output.dir/src/cameracalib.cpp.o: /usr/local/include/opencv2/videostab/ring_buffer.hpp
 CMakeFiles/output.dir/src/cameracalib.cpp.o: /usr/local/include/opencv2/videostab/stabilizer.hpp
 CMakeFiles/output.dir/src/cameracalib.cpp.o: /usr/local/include/opencv2/videostab/wobble_suppression.hpp
+CMakeFiles/output.dir/src/cameracalib.cpp.o: /usr/local/include/opencv2/xfeatures2d/cuda.hpp
 
 CMakeFiles/output.dir/src/frameselect.cpp.o: ../include/frameselect.h
 CMakeFiles/output.dir/src/frameselect.cpp.o: ../src/frameselect.cpp
@@ -364,6 +366,7 @@ CMakeFiles/output.dir/src/frameselect.cpp.o: /usr/local/include/opencv2/videosta
 CMakeFiles/output.dir/src/frameselect.cpp.o: /usr/local/include/opencv2/videostab/ring_buffer.hpp
 CMakeFiles/output.dir/src/frameselect.cpp.o: /usr/local/include/opencv2/videostab/stabilizer.hpp
 CMakeFiles/output.dir/src/frameselect.cpp.o: /usr/local/include/opencv2/videostab/wobble_suppression.hpp
+CMakeFiles/output.dir/src/frameselect.cpp.o: /usr/local/include/opencv2/xfeatures2d/cuda.hpp
 
 CMakeFiles/output.dir/src/patrecog.cpp.o: ../include/patrecog.h
 CMakeFiles/output.dir/src/patrecog.cpp.o: ../src/patrecog.cpp
@@ -485,4 +488,5 @@ CMakeFiles/output.dir/src/patrecog.cpp.o: /usr/local/include/opencv2/videostab/o
 CMakeFiles/output.dir/src/patrecog.cpp.o: /usr/local/include/opencv2/videostab/ring_buffer.hpp
 CMakeFiles/output.dir/src/patrecog.cpp.o: /usr/local/include/opencv2/videostab/stabilizer.hpp
 CMakeFiles/output.dir/src/patrecog.cpp.o: /usr/local/include/opencv2/videostab/wobble_suppression.hpp
+CMakeFiles/output.dir/src/patrecog.cpp.o: /usr/local/include/opencv2/xfeatures2d/cuda.hpp
 

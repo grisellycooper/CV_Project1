@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/3.10.2/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/3.10.2/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,221 +23,35 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/3.10.2/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/3.10.2/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7328d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7328d.dir/build.make CMakeFiles/cmTC_7328d.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7328d.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_7328d.dir/testCCompiler.c.o   -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_7328d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7328d.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_7328d.dir/testCCompiler.c.o  -o cmTC_7328d 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_292e5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_292e5.dir/build.make CMakeFiles/cmTC_292e5.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_292e5.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_292e5.dir/testCCompiler.c.o   -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_292e5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_292e5.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_292e5.dir/testCCompiler.c.o  -o cmTC_292e5 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_77bc0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_77bc0.dir/build.make CMakeFiles/cmTC_77bc0.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_77bc0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_77bc0.dir/link.txt --verbose=1
-/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o  -o cmTC_77bc0 
+Run Build Command:"/usr/bin/make" "cmTC_5013f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5013f.dir/build.make CMakeFiles/cmTC_5013f.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_5013f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5013f.dir/link.txt --verbose=1
+/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o  -o cmTC_5013f 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/6/lto-wrapper
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 6.5.0-2ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-6/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++ --prefix=/usr --with-as=/usr/bin/x86_64-linux-gnu-as --with-ld=/usr/bin/x86_64-linux-gnu-ld --program-suffix=-6 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
-Thread model: posix
-gcc version 6.5.0 20181026 (Ubuntu 6.5.0-2ubuntu1~18.04) 
-COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_77bc0' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/6/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/6/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/6/lto-wrapper -plugin-opt=-fresolution=/tmp/cc3oK3Cz.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_77bc0 /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/6/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/6 -L/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/6/../../.. CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/6/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_77bc0' '-mtune=generic' '-march=x86-64'
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-
-
-Parsed C implicit link information from above output:
-  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp]
-  ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_77bc0/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_77bc0.dir/build.make CMakeFiles/cmTC_77bc0.dir/build]
-  ignore line: [make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_77bc0]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_77bc0.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o  -o cmTC_77bc0 ]
-  ignore line: [Using built-in specs.]
-  ignore line: [COLLECT_GCC=/usr/bin/cc]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/6/lto-wrapper]
-  ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 6.5.0-2ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-6/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++ --prefix=/usr --with-as=/usr/bin/x86_64-linux-gnu-as --with-ld=/usr/bin/x86_64-linux-gnu-ld --program-suffix=-6 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
-  ignore line: [Thread model: posix]
-  ignore line: [gcc version 6.5.0 20181026 (Ubuntu 6.5.0-2ubuntu1~18.04) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/6/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/6/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_77bc0' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/6/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/6/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/6/lto-wrapper -plugin-opt=-fresolution=/tmp/cc3oK3Cz.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_77bc0 /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/6/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/6 -L/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/6/../../.. CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/6/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/collect2] ==> ignore
-    arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/6/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cc3oK3Cz.res] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [-plugin-opt=-pass-through=-lc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [--sysroot=/] ==> ignore
-    arg [--build-id] ==> ignore
-    arg [--eh-frame-hdr] ==> ignore
-    arg [-m] ==> ignore
-    arg [elf_x86_64] ==> ignore
-    arg [--hash-style=gnu] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-export-dynamic] ==> ignore
-    arg [-dynamic-linker] ==> ignore
-    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
-    arg [-pie] ==> ignore
-    arg [-znow] ==> ignore
-    arg [-zrelro] ==> ignore
-    arg [-o] ==> ignore
-    arg [cmTC_77bc0] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/6] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/6]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib]
-    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
-    arg [-L/lib/../lib] ==> dir [/lib/../lib]
-    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
-    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/6/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../..]
-    arg [CMakeFiles/cmTC_77bc0.dir/CMakeCCompilerABI.c.o] ==> ignore
-    arg [-lgcc] ==> lib [gcc]
-    arg [--push-state] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [--pop-state] ==> ignore
-    arg [-lc] ==> lib [c]
-    arg [-lgcc] ==> lib [gcc]
-    arg [--push-state] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [--pop-state] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/6] ==> [/usr/lib/gcc/x86_64-linux-gnu/6]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib] ==> [/usr/lib]
-  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
-  collapse library dir [/lib/../lib] ==> [/lib]
-  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/6/../../..] ==> [/usr/lib]
-  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
-  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/6;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
-  implicit fwks: []
-
-
-
-
-Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_0cea5/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0cea5.dir/build.make CMakeFiles/cmTC_0cea5.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0cea5.dir/feature_tests.c.o
-/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_0cea5.dir/feature_tests.c.o   -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_0cea5
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0cea5.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_0cea5.dir/feature_tests.c.o  -o cmTC_0cea5 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:1c_restrict
-    Feature record: C_FEATURE:1c_static_assert
-    Feature record: C_FEATURE:1c_variadic_macros
-
-
-Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_93cba/fast"
-/usr/bin/make -f CMakeFiles/cmTC_93cba.dir/build.make CMakeFiles/cmTC_93cba.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_93cba.dir/feature_tests.c.o
-/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_93cba.dir/feature_tests.c.o   -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_93cba
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_93cba.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_93cba.dir/feature_tests.c.o  -o cmTC_93cba 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:1c_restrict
-    Feature record: C_FEATURE:0c_static_assert
-    Feature record: C_FEATURE:1c_variadic_macros
-
-
-Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_f052f/fast"
-/usr/bin/make -f CMakeFiles/cmTC_f052f.dir/build.make CMakeFiles/cmTC_f052f.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f052f.dir/feature_tests.c.o
-/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_f052f.dir/feature_tests.c.o   -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_f052f
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f052f.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_f052f.dir/feature_tests.c.o  -o cmTC_f052f 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:0c_restrict
-    Feature record: C_FEATURE:0c_static_assert
-    Feature record: C_FEATURE:0c_variadic_macros
-Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_4c439/fast"
-/usr/bin/make -f CMakeFiles/cmTC_4c439.dir/build.make CMakeFiles/cmTC_4c439.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_4c439.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_4c439.dir/testCXXCompiler.cxx.o -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_4c439
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c439.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_4c439.dir/testCXXCompiler.cxx.o  -o cmTC_4c439 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-
-
-Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_53ac3/fast"
-/usr/bin/make -f CMakeFiles/cmTC_53ac3.dir/build.make CMakeFiles/cmTC_53ac3.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_53ac3
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53ac3.dir/link.txt --verbose=1
-/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_53ac3 
-Using built-in specs.
-COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
 OFFLOAD_TARGET_NAMES=nvptx-none
 OFFLOAD_TARGET_DEFAULT=1
@@ -247,26 +61,26 @@ Thread model: posix
 gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_53ac3' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCOyz4O.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_53ac3 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_53ac3' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_5013f' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cccwVmoF.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_5013f /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_5013f' '-mtune=generic' '-march=x86-64'
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
-Parsed CXX implicit link information from above output:
+Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_53ac3/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_53ac3.dir/build.make CMakeFiles/cmTC_53ac3.dir/build]
-  ignore line: [make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_53ac3]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53ac3.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_53ac3 ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_5013f/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_5013f.dir/build.make CMakeFiles/cmTC_5013f.dir/build]
+  ignore line: [make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_5013f]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5013f.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o  -o cmTC_5013f ]
   ignore line: [Using built-in specs.]
-  ignore line: [COLLECT_GCC=/usr/bin/c++]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
   ignore line: [OFFLOAD_TARGET_DEFAULT=1]
@@ -276,18 +90,18 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_53ac3' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCOyz4O.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_53ac3 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_5013f' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cccwVmoF.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_5013f /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccCOyz4O.res] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cccwVmoF.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
@@ -302,7 +116,7 @@ Parsed CXX implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_53ac3] ==> ignore
+    arg [cmTC_5013f] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> ignore
@@ -314,7 +128,197 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
-    arg [CMakeFiles/cmTC_53ac3.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_5013f.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7] ==> [/usr/lib/gcc/x86_64-linux-gnu/7]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> [/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/7;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_17013/fast"
+/usr/bin/make -f CMakeFiles/cmTC_17013.dir/build.make CMakeFiles/cmTC_17013.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_17013.dir/feature_tests.c.o
+/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_17013.dir/feature_tests.c.o   -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_17013
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_17013.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_17013.dir/feature_tests.c.o  -o cmTC_17013 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_173c4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_173c4.dir/build.make CMakeFiles/cmTC_173c4.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_173c4.dir/feature_tests.c.o
+/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_173c4.dir/feature_tests.c.o   -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_173c4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_173c4.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_173c4.dir/feature_tests.c.o  -o cmTC_173c4 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_184f5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_184f5.dir/build.make CMakeFiles/cmTC_184f5.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_184f5.dir/feature_tests.c.o
+/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_184f5.dir/feature_tests.c.o   -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_184f5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_184f5.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_184f5.dir/feature_tests.c.o  -o cmTC_184f5 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0a47f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0a47f.dir/build.make CMakeFiles/cmTC_0a47f.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0a47f.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_0a47f.dir/testCXXCompiler.cxx.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_0a47f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a47f.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_0a47f.dir/testCXXCompiler.cxx.o  -o cmTC_0a47f 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_88a9d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_88a9d.dir/build.make CMakeFiles/cmTC_88a9d.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_88a9d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_88a9d.dir/link.txt --verbose=1
+/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_88a9d 
+Using built-in specs.
+COLLECT_GCC=/usr/bin/c++
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.3.0-27ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_88a9d' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccgnWTuF.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_88a9d /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_88a9d' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_88a9d/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_88a9d.dir/build.make CMakeFiles/cmTC_88a9d.dir/build]
+  ignore line: [make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_88a9d]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_88a9d.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_88a9d ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/c++]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
+  ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+  ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.3.0-27ubuntu1~18.04' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_88a9d' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccgnWTuF.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_88a9d /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccgnWTuF.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [--sysroot=/] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_88a9d] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
+    arg [CMakeFiles/cmTC_88a9d.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -340,17 +344,17 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++1z] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_11978/fast"
-/usr/bin/make -f CMakeFiles/cmTC_11978.dir/build.make CMakeFiles/cmTC_11978.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_11978.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++1z -o CMakeFiles/cmTC_11978.dir/feature_tests.cxx.o -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_11978
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11978.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_11978.dir/feature_tests.cxx.o  -o cmTC_11978 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_1acdc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1acdc.dir/build.make CMakeFiles/cmTC_1acdc.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1acdc.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++1z -o CMakeFiles/cmTC_1acdc.dir/feature_tests.cxx.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_1acdc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1acdc.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_1acdc.dir/feature_tests.cxx.o  -o cmTC_1acdc 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -413,17 +417,17 @@ make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Proj
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_35c29/fast"
-/usr/bin/make -f CMakeFiles/cmTC_35c29.dir/build.make CMakeFiles/cmTC_35c29.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_35c29.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_35c29.dir/feature_tests.cxx.o -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_35c29
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35c29.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_35c29.dir/feature_tests.cxx.o  -o cmTC_35c29 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_7c1df/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7c1df.dir/build.make CMakeFiles/cmTC_7c1df.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7c1df.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_7c1df.dir/feature_tests.cxx.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_7c1df
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c1df.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_7c1df.dir/feature_tests.cxx.o  -o cmTC_7c1df 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -486,17 +490,17 @@ make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Proj
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a2bb5/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a2bb5.dir/build.make CMakeFiles/cmTC_a2bb5.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_a2bb5.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_a2bb5.dir/feature_tests.cxx.o -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_a2bb5
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a2bb5.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_a2bb5.dir/feature_tests.cxx.o  -o cmTC_a2bb5 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_cf873/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cf873.dir/build.make CMakeFiles/cmTC_cf873.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_cf873.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_cf873.dir/feature_tests.cxx.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_cf873
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cf873.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_cf873.dir/feature_tests.cxx.o  -o cmTC_cf873 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -559,17 +563,17 @@ make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Proj
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_664d7/fast"
-/usr/bin/make -f CMakeFiles/cmTC_664d7.dir/build.make CMakeFiles/cmTC_664d7.dir/build
-make[1]: Entering directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_664d7.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_664d7.dir/feature_tests.cxx.o -c /home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_664d7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_664d7.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_664d7.dir/feature_tests.cxx.o  -o cmTC_664d7 
-make[1]: Leaving directory '/home/sol/Documents/MCS/II/Imagenes/Project1/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_11d9f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_11d9f.dir/build.make CMakeFiles/cmTC_11d9f.dir/build
+make[1]: Entering directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_11d9f.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_11d9f.dir/feature_tests.cxx.o -c /home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_11d9f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11d9f.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_11d9f.dir/feature_tests.cxx.o  -o cmTC_11d9f 
+make[1]: Leaving directory '/home/sol/MCS/Imagenes/CV_Project1/CameraCalibration/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
